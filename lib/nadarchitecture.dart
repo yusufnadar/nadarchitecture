@@ -77,7 +77,7 @@ import 'package:nadarchitecture/arch/views/widgets/custom/custom_back_button.dar
 import 'package:nadarchitecture/arch/views/widgets/custom/custom_button.dart';
 import 'package:nadarchitecture/arch/views/widgets/custom/custom_input.dart';
 import 'package:nadarchitecture/arch/views/widgets/custom/custom_loading.dart';
-
+import 'package:path/path.dart' as path;
 import 'arch/common/controllers/user_controller.dart';
 import 'arch/core/init/exceptions/http_exceptions.dart';
 import 'arch/core/use_cases/check_network/controller/network_cache_controller.dart';
@@ -85,11 +85,12 @@ import 'arch/views/pages/bottomBar/widgets/page_showed.dart';
 
 class Architecture {
   static Future<void> createArchitecture() async {
-    await createCommon();
-    await createCore();
-    await createUtils();
-    await createViews();
-    await createMain();
+    //await createCommon();
+    //await createCore();
+    //await createUtils();
+    //await createViews();
+    //await createMain();
+    await createAssets();
   }
 
   static Future createCommon() async {
@@ -177,12 +178,16 @@ class Architecture {
     // init services
     const coreInitService = '$coreInit/services';
     await Directory(coreInitService).create();
-    await File('$coreInitService/get_it_service.dart').writeAsString(getItService);
-    await File('$coreInitService/local_service.dart').writeAsString(localService);
+    await File('$coreInitService/get_it_service.dart')
+        .writeAsString(getItService);
+    await File('$coreInitService/local_service.dart')
+        .writeAsString(localService);
     await File('$coreInitService/network_service.dart')
         .writeAsString(networkService);
-    await File('$coreInitService/route_service.dart').writeAsString(routeService);
-    await File('$coreInitService/theme_service.dart').writeAsString(themeService);
+    await File('$coreInitService/route_service.dart')
+        .writeAsString(routeService);
+    await File('$coreInitService/theme_service.dart')
+        .writeAsString(themeService);
 
     // use_cases
     const useCases = '$core/use_cases';
@@ -261,9 +266,11 @@ class Architecture {
         .writeAsString(forgotPasswordBinding);
 
     // views pages auth forgotPassword controller
-    const viewsPagesAuthForgotPasswordController = '$viewsPagesAuthForgotPassword/controller';
+    const viewsPagesAuthForgotPasswordController =
+        '$viewsPagesAuthForgotPassword/controller';
     await Directory(viewsPagesAuthForgotPasswordController).create();
-    await File('$viewsPagesAuthForgotPasswordController/forgot_password_controller.dart')
+    await File(
+            '$viewsPagesAuthForgotPasswordController/forgot_password_controller.dart')
         .writeAsString(forgotPasswordController);
 
     // views pages auth forgotPassword view
@@ -506,5 +513,72 @@ class Architecture {
 
   static Future createMain() async {
     await File('lib/main.dart').writeAsString(mainPage);
+  }
+
+  static Future createAssets() async {
+
+    await Directory('assets').create();
+    await Directory('assets/fonts').create();
+    await Directory('assets/fonts/Comfortaa').create();
+    await Directory('assets/icons').create();
+    await Directory('assets/icons/png').create();
+    await Directory('assets/icons/svg').create();
+    await Directory('assets/images').create();
+    await Directory('assets/images/png').create();
+    await Directory('assets/images/svg').create();
+
+
+    // assets icons
+    const icons = 'lib/assets/icons';
+    var file = File('$icons/png/back_arrow.png');
+    var baseNameWithExtension = path.basename(file.path);
+    await moveFile(file, 'assets/icons/png/$baseNameWithExtension');
+
+    const images = 'lib/assets/images';
+
+    var file2 = File('$images/svg/forgot_password.svg');
+    var baseNameWithExtension2 = path.basename(file2.path);
+    await moveFile(file2, 'assets/images/svg/$baseNameWithExtension2');
+
+    var file3 = File('$images/svg/login.svg');
+    var baseNameWithExtension3 = path.basename(file3.path);
+    await moveFile(file3, 'assets/images/svg/$baseNameWithExtension3');
+
+    var file4 = File('$images/svg/register.svg');
+    var baseNameWithExtension4 = path.basename(file4.path);
+    await moveFile(file4, 'assets/images/svg/$baseNameWithExtension4');
+
+    // assets fonts
+    const fonts = 'lib/assets/fonts/Comfortaa';
+
+    var fFile1 = File('$fonts/Comfortaa-Bold.ttf');
+    var fBaseNameWithExtension1 = path.basename(fFile1.path);
+    await moveFile(fFile1, 'assets/fonts/Comfortaa/$fBaseNameWithExtension1');
+
+    var fFile2 = File('$fonts/Comfortaa-Light.ttf');
+    var fBaseNameWithExtension2 = path.basename(fFile2.path);
+    await moveFile(fFile2, 'assets/fonts/Comfortaa/$fBaseNameWithExtension2');
+
+    var fFile3 = File('$fonts/Comfortaa-Medium.ttf');
+    var fBaseNameWithExtension3 = path.basename(fFile3.path);
+    await moveFile(fFile3, 'assets/fonts/Comfortaa/$fBaseNameWithExtension3');
+
+    var fFile4 = File('$fonts/Comfortaa-Regular.ttf');
+    var fBaseNameWithExtension4 = path.basename(fFile4.path);
+    await moveFile(fFile4, 'assets/fonts/Comfortaa/$fBaseNameWithExtension4');
+
+    var fFile5 = File('$fonts/Comfortaa-SemiBold.ttf');
+    var fBaseNameWithExtension5 = path.basename(fFile5.path);
+    await moveFile(fFile5, 'assets/fonts/Comfortaa/$fBaseNameWithExtension5');
+  }
+
+  static Future<File> moveFile(File sourceFile, String newPath) async {
+    try {
+      return await sourceFile.rename(newPath);
+    } on FileSystemException catch (e) {
+      final newFile = await sourceFile.copy(newPath);
+      await sourceFile.delete();
+      return newFile;
+    }
   }
 }

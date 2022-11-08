@@ -1,3 +1,3 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Local Service, Network Service, Route Service and Theme Service added
