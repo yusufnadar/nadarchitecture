@@ -38,6 +38,4 @@ flutter pub run nadarchitecture:main
 ```
 
 
-## Additional information
-
 
