@@ -1,5 +1,6 @@
 library nadarchitecture;
 
+import 'dart:developer';
 import 'dart:io';
 import 'package:nadarchitecture/arch/common/models/token_model.dart';
 import 'package:nadarchitecture/arch/common/models/token_model.g.dart';
@@ -76,6 +77,7 @@ class Architecture {
     await createViews();
     await createMain();
     await createScripts();
+    print('Package installed successfully');
   }
 
   static Future createCommon() async {
@@ -96,6 +98,7 @@ class Architecture {
     await File('$models/user_model.dart').writeAsString(userModel);
     await File('$models/user_model.g.dart').writeAsString(userModelG);
     await File('$models/data_model.dart').writeAsString(dataModel);
+    print('Common folder created');
   }
 
   static Future createCore() async {
@@ -202,6 +205,8 @@ class Architecture {
     await Directory(useCasesCheckNetworkView).create();
     await File('$useCasesCheckNetworkView/no_network.dart')
         .writeAsString(noNetworkWidget);
+
+    print('Core folder created');
   }
 
   static Future createUtils() async {
@@ -224,6 +229,8 @@ class Architecture {
         .writeAsString(screenControl);
     await File('$utilsHelpers/sized_boxes.dart').writeAsString(sizedBoxes);
     await File('$utilsHelpers/text_styles.dart').writeAsString(styles);
+
+    print('Utils folder created');
   }
 
   static Future createViews() async {
@@ -388,15 +395,20 @@ class Architecture {
         .writeAsString(customInput);
     await File('$viewsWidgetsCustom/custom_loading.dart')
         .writeAsString(customLoading);
+
+    print('Views folder created');
   }
 
   static Future createMain() async {
     await File('lib/main.dart').writeAsString(mainPage);
+    print('Main file created');
   }
 
   static Future createScripts() async {
     const scripts = 'scripts';
     await Directory(scripts).create();
     await File('$scripts/build.sh').writeAsString(script);
+
+    print('Scripts folder created');
   }
 }
