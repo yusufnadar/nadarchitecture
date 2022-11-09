@@ -1,5 +1,4 @@
-const colors =
-    """
+const colors = """
 import 'package:flutter/material.dart';
 
 class AppColors {

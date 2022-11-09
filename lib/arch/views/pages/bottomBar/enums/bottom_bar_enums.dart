@@ -1,4 +1,3 @@
-const bottomBarEnums =
-    """
+const bottomBarEnums = """
 enum BottomBar { homePage, profile }
     """;

@@ -1,5 +1,4 @@
-const profile =
-    """
+const profile = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../common/controllers/user_controller.dart';
@@ -18,15 +17,17 @@ class Profile extends StatelessWidget {
           title: const Text('Profile'),
           actions: [
             IconButton(
-              onPressed: () {
-                Get.find<ProfileController>().logout();
+              onPressed: () async {
+                await Get.find<ProfileController>().logout();
               },
               icon: const Icon(Icons.logout),
             ),
           ],
         ),
         body: GestureDetector(
-          onTap: () => Get.find<UserController>().getUser(),
+          onTap: () async {
+            await Get.find<UserController>().getUser();
+          },
           child: const Center(
             child: Text('Get User'),
           ),

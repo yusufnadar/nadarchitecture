@@ -1,5 +1,4 @@
-const registerController =
-    """
+const registerController = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../common/controllers/user_controller.dart';

@@ -1,5 +1,4 @@
-const getItService =
-    """
+const getItService = """
 import 'package:get_it/get_it.dart';
 import '../../base/base_exception.dart';
 import 'local_service.dart';

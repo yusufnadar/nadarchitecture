@@ -1,5 +1,4 @@
-const splashController =
-    """
+const splashController = """
 import 'package:get/get.dart';
 import '../../../../../common/controllers/user_controller.dart';
 import '../../../../../core/constants/local_consts.dart';
@@ -22,7 +21,7 @@ class SplashController extends GetxController {
       await Get.find<UserController>().getUser();
       await Get.offAllNamed(Routes.bottomNavigationBar);
     } else {
-      await Get.offAllNamed(Routes.login);
+      await Get.offAllNamed(Routes.register);
     }
   }
 }

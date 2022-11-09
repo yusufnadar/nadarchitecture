@@ -1,5 +1,4 @@
-const customInput =
-    """
+const customInput = """
 import 'package:flutter/material.dart';
 import '../../../core/constants/colors.dart';
 
@@ -8,10 +7,10 @@ class CustomInput extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(dynamic)? validator;
   final Function()? iconPressed;
-  bool? obscureText;
+  final bool? obscureText;
   final TextInputType? keyboardType;
 
-  CustomInput({
+  const CustomInput({
     Key? key,
     this.hintText,
     required this.controller,

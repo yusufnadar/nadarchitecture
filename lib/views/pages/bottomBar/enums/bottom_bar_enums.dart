@@ -1,0 +1,2 @@
+enum BottomBar { homePage, profile }
+    

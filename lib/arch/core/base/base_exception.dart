@@ -1,5 +1,6 @@
-const baseException =
-    """
+const baseException = """
+// To show errors from one class
+
 import '../../utils/helpers/get_snackbars.dart';
 
 class BaseException {

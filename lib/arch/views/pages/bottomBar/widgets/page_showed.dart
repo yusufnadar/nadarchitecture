@@ -1,5 +1,4 @@
-const pageShowed =
-    """
+const pageShowed = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/page_showed_controller.dart';

@@ -1,13 +1,11 @@
-const bottomBarConsts =
-    """
+const bottomBarConsts = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../core/constants/routes.dart';
 import '../../home/view/home_detail.dart';
 import '../../home/view/home_page.dart';
 import '../../profile/view/profile.dart';
-import '../../profile/view/profile_detail.dart';
 import '../enums/bottom_bar_enums.dart';
-import '../../../../core/constants/routes.dart';
 
 class BottomBarConsts {
   static const List<Map<BottomBar, String>> bottomBarLabels = [
@@ -34,14 +32,14 @@ class BottomBarConsts {
       onGenerateRoute: (routeSettings) {
         if (routeSettings.name == Routes.homePage) {
           return GetPageRoute(
-            routeName: Routes.login,
+            routeName: Routes.homePage,
             page: () => const HomePage(),
             transition: Transition.rightToLeftWithFade,
           );
         } else if (routeSettings.name == Routes.detail) {
           return GetPageRoute(
             routeName: Routes.detail,
-            page: () => const DetailPage(),
+            page: () => const HomeDetail(),
             transition: Transition.rightToLeftWithFade,
           );
         }
@@ -58,12 +56,6 @@ class BottomBarConsts {
             page: () => const Profile(),
             transition: Transition.rightToLeftWithFade,
             //binding: ProfileBinding()
-          );
-        } else if (routeSettings.name == Routes.profileDetail) {
-          return GetPageRoute(
-            routeName: Routes.profileDetail,
-            page: () => const ProfileDetail(),
-            transition: Transition.rightToLeftWithFade,
           );
         }
       },

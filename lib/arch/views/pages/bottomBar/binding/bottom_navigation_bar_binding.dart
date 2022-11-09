@@ -1,5 +1,4 @@
-const bottomNavigationBarBinding =
-    """
+const bottomNavigationBarBinding = """
 import 'package:get/get.dart';
 import '../controller/bottom_navigation_bar_controller.dart';
 import '../controller/page_showed_controller.dart';

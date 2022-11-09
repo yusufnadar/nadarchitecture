@@ -1,5 +1,4 @@
-const registerModel =
-    """
+const registerModel = """
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../../../core/base/base_model.dart';

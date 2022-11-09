@@ -1,5 +1,4 @@
-const registerBinding =
-    """
+const registerBinding = """
 import 'package:get/get.dart';
 import '../controller/register_controller.dart';
 

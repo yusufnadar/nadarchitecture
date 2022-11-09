@@ -1,5 +1,4 @@
-const networkService =
-    """
+const networkService = """
 import 'dart:convert';
 import 'dart:io';
 import 'package:get/get.dart';
@@ -99,7 +98,7 @@ class NetworkService {
             GetBars.warningSnackBar('Uyarı', 'Oturumunuzun süresi doldu');
             await _localService.remove(AppLocalConsts.accessToken);
             await _localService.remove(AppLocalConsts.refreshToken);
-            return Get.offAllNamed(Routes.login);
+            return await Get.offAllNamed(Routes.register);
           } else {
             if (data['message'] == 'token_not_valid') {
               await refresh();
@@ -118,7 +117,7 @@ class NetworkService {
             'Error accured while communicating with serverwith status code\${response.statusCode}',
           );
       }
-    }
+    } 
   }
 
   Future<dynamic> retry<T>(
@@ -153,7 +152,7 @@ class NetworkService {
     } else {
       await GetBars.errorSnackBar('Uyarı', 'Oturumunuzun süresi doldu');
       await _localService.remove(AppLocalConsts.accessToken);
-      await Get.offAllNamed(Routes.login);
+      await Get.offAllNamed(Routes.register);
     }
   }
 }

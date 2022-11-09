@@ -1,5 +1,4 @@
-const profileBinding =
-    """
+const profileBinding = """
 import 'package:get/get.dart';
 import '../controller/profile_controller.dart';
 

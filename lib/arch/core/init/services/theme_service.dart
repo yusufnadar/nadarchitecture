@@ -1,5 +1,4 @@
-const themeService =
-    """
+const themeService = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants/local_consts.dart';

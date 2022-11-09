@@ -1,5 +1,4 @@
-const themes =
-    """
+const themes = """
 import 'package:flutter/material.dart';
 import 'app.dart';
 import 'colors.dart';

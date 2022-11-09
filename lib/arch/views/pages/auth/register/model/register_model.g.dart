@@ -1,5 +1,4 @@
-const registerModelG =
-    """
+const registerModelG = """
 part of 'register_model.dart';
 
 RegisterModel _\$RegisterModelFromJson(Map<String, dynamic> json) =>

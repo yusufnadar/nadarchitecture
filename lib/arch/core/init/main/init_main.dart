@@ -1,7 +1,6 @@
-const initMain =
-    """
+const initMain = """
 import 'package:flutter/material.dart';
-import '../../use_cases/check_network/view/no_network.dart';
+import '../../useCases/checkNetwork/view/no_network.dart';
 
 class InitMain {
   static Widget builder(BuildContext context, Widget? child) {

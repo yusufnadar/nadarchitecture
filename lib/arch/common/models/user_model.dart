@@ -1,5 +1,4 @@
-const userModel =
-    """
+const userModel = """
 import 'package:json_annotation/json_annotation.dart';
 import '../../core/base/base_model.dart';
 
@@ -20,5 +19,4 @@ class UserModel extends BaseModel {
   @override
   Map<String, dynamic> toJson() => _\$UserModelToJson(this);
 }
-
     """;

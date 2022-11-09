@@ -1,16 +1,15 @@
-const mainPage =
-    """
+const mainPage = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'core/constants/app.dart';
 import 'core/constants/routes.dart';
 import 'core/constants/themes.dart';
 import 'core/init/bindings/initial_bindings.dart';
+import 'core/init/controller/my_app_controller.dart';
 import 'core/init/main/init_main.dart';
 import 'core/init/services/get_it_service.dart';
 import 'core/init/services/route_service.dart';
 import 'core/init/services/theme_service.dart';
-import 'core/init/controller/my_app_controller.dart';
 
 void main() async {
   Get.put(MyAppController());

@@ -1,5 +1,4 @@
-const splash =
-    """
+const splash = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../core/constants/colors.dart';

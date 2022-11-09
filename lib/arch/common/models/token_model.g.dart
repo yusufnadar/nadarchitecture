@@ -11,5 +11,4 @@ Map<String, dynamic> _\$TokenModelToJson(TokenModel instance) =>
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
     };        
-    
-    """;
+""";

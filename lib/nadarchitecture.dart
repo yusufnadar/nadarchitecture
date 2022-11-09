@@ -7,7 +7,7 @@ import 'package:nadarchitecture/arch/common/models/user_model.dart';
 import 'package:nadarchitecture/arch/common/models/user_model.g.dart';
 import 'package:nadarchitecture/arch/core/base/base_exception.dart';
 import 'package:nadarchitecture/arch/core/base/base_model.dart';
-import 'package:nadarchitecture/arch/core/base/data_model.dart';
+import 'package:nadarchitecture/arch/common/models/data_model.dart';
 import 'package:nadarchitecture/arch/core/constants/app.dart';
 import 'package:nadarchitecture/arch/core/constants/colors.dart';
 import 'package:nadarchitecture/arch/core/constants/end_points.dart';
@@ -27,10 +27,10 @@ import 'package:nadarchitecture/arch/core/init/services/local_service.dart';
 import 'package:nadarchitecture/arch/core/init/services/network_service.dart';
 import 'package:nadarchitecture/arch/core/init/services/route_service.dart';
 import 'package:nadarchitecture/arch/core/init/services/theme_service.dart';
-import 'package:nadarchitecture/arch/core/use_cases/check_network/services/connectivity_service.dart';
-import 'package:nadarchitecture/arch/core/use_cases/check_network/services/internet_connection_checker_service.dart';
-import 'package:nadarchitecture/arch/core/use_cases/check_network/services/network_cache_service.dart';
-import 'package:nadarchitecture/arch/core/use_cases/check_network/view/no_network.dart';
+import 'package:nadarchitecture/arch/core/useCases/checkNetwork/services/connectivity_service.dart';
+import 'package:nadarchitecture/arch/core/useCases/checkNetwork/services/internet_connection_checker_service.dart';
+import 'package:nadarchitecture/arch/core/useCases/checkNetwork/services/network_cache_service.dart';
+import 'package:nadarchitecture/arch/core/useCases/checkNetwork/view/no_network.dart';
 import 'package:nadarchitecture/arch/main.dart';
 import 'package:nadarchitecture/arch/utils/extensions/color_extension.dart';
 import 'package:nadarchitecture/arch/utils/extensions/page_padding.dart';
@@ -38,17 +38,6 @@ import 'package:nadarchitecture/arch/utils/helpers/get_snackbars.dart';
 import 'package:nadarchitecture/arch/utils/helpers/screen_up_down.dart';
 import 'package:nadarchitecture/arch/utils/helpers/sized_boxes.dart';
 import 'package:nadarchitecture/arch/utils/helpers/text_styles.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/forgotPassword/binding/forgot_password_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/forgotPassword/controller/forgot_password_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/forgotPassword/view/forgot_password.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/login/binding/login_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/login/controller/login_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/login/model/login_model.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/login/model/login_model.g.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/login/view/login.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/newPassword/binding/new_password_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/newPassword/controller/new_password_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/newPassword/view/new_password.dart';
 import 'package:nadarchitecture/arch/views/pages/auth/register/binding/register_binding.dart';
 import 'package:nadarchitecture/arch/views/pages/auth/register/controller/register_controller.dart';
 import 'package:nadarchitecture/arch/views/pages/auth/register/model/register_model.dart';
@@ -57,9 +46,6 @@ import 'package:nadarchitecture/arch/views/pages/auth/register/view/register.dar
 import 'package:nadarchitecture/arch/views/pages/auth/splash/binding/splash_binding.dart';
 import 'package:nadarchitecture/arch/views/pages/auth/splash/controller/splash_controller.dart';
 import 'package:nadarchitecture/arch/views/pages/auth/splash/view/splash.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/verifyCode/binding/verify_code_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/verifyCode/controller/verify_code_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/verifyCode/view/verify_code.dart';
 import 'package:nadarchitecture/arch/views/pages/bottomBar/binding/bottom_navigation_bar_binding.dart';
 import 'package:nadarchitecture/arch/views/pages/bottomBar/consts/bottom_bar_consts.dart';
 import 'package:nadarchitecture/arch/views/pages/bottomBar/controller/bottom_navigation_bar_controller.dart';
@@ -71,26 +57,25 @@ import 'package:nadarchitecture/arch/views/pages/home/view/home_page.dart';
 import 'package:nadarchitecture/arch/views/pages/profile/binding/profile_binding.dart';
 import 'package:nadarchitecture/arch/views/pages/profile/controller/profile_controller.dart';
 import 'package:nadarchitecture/arch/views/pages/profile/view/profile.dart';
-import 'package:nadarchitecture/arch/views/pages/profile/view/profile_detail.dart';
 import 'package:nadarchitecture/arch/views/widgets/auth/have_an_account.dart';
 import 'package:nadarchitecture/arch/views/widgets/custom/custom_back_button.dart';
 import 'package:nadarchitecture/arch/views/widgets/custom/custom_button.dart';
 import 'package:nadarchitecture/arch/views/widgets/custom/custom_input.dart';
 import 'package:nadarchitecture/arch/views/widgets/custom/custom_loading.dart';
-import 'package:path/path.dart' as path;
 import 'arch/common/controllers/user_controller.dart';
 import 'arch/core/init/exceptions/http_exceptions.dart';
-import 'arch/core/use_cases/check_network/controller/network_cache_controller.dart';
+import 'arch/core/useCases/checkNetwork/controller/network_cache_controller.dart';
 import 'arch/views/pages/bottomBar/widgets/page_showed.dart';
+import 'scripts/build_sh.dart';
 
 class Architecture {
   static Future<void> createArchitecture() async {
-    //await createCommon();
-    //await createCore();
-    //await createUtils();
-    //await createViews();
-    //await createMain();
-    await createAssets();
+    await createCommon();
+    await createCore();
+    await createUtils();
+    await createViews();
+    await createMain();
+    await createScripts();
   }
 
   static Future createCommon() async {
@@ -110,6 +95,7 @@ class Architecture {
     await File('$models/token_model.g.dart').writeAsString(tokenModelG);
     await File('$models/user_model.dart').writeAsString(userModel);
     await File('$models/user_model.g.dart').writeAsString(userModelG);
+    await File('$models/data_model.dart').writeAsString(dataModel);
   }
 
   static Future createCore() async {
@@ -121,7 +107,6 @@ class Architecture {
     await Directory(base).create();
     await File('$base/base_exception.dart').writeAsString(baseException);
     await File('$base/base_model.dart').writeAsString(baseModel);
-    await File('$base/data_model.dart').writeAsString(dataModel);
 
     // constants
     const constants = '$core/constants';
@@ -189,9 +174,9 @@ class Architecture {
     await File('$coreInitService/theme_service.dart')
         .writeAsString(themeService);
 
-    // use_cases
-    const useCases = '$core/use_cases';
-    const useCasesCheckNetwork = '$useCases/check_network';
+    // useCases
+    const useCases = '$core/useCases';
+    const useCasesCheckNetwork = '$useCases/checkNetwork';
     await Directory(useCases).create();
     await Directory(useCasesCheckNetwork).create();
 
@@ -253,87 +238,6 @@ class Architecture {
     const viewsPagesAuth = 'lib/views/pages/auth';
     await Directory(viewsPagesAuth).create();
 
-    // views pages auth forgotPassword
-    const viewsPagesAuthForgotPassword = '$viewsPagesAuth/forgotPassword';
-    await Directory(viewsPagesAuthForgotPassword).create();
-
-    // views pages auth forgotPassword binding
-    const viewsPagesAuthForgotPasswordBinding =
-        '$viewsPagesAuthForgotPassword/binding';
-    await Directory(viewsPagesAuthForgotPasswordBinding).create();
-    await File(
-            '$viewsPagesAuthForgotPasswordBinding/forgot_password_binding.dart')
-        .writeAsString(forgotPasswordBinding);
-
-    // views pages auth forgotPassword controller
-    const viewsPagesAuthForgotPasswordController =
-        '$viewsPagesAuthForgotPassword/controller';
-    await Directory(viewsPagesAuthForgotPasswordController).create();
-    await File(
-            '$viewsPagesAuthForgotPasswordController/forgot_password_controller.dart')
-        .writeAsString(forgotPasswordController);
-
-    // views pages auth forgotPassword view
-    const viewsPagesAuthForgotPasswordView =
-        '$viewsPagesAuthForgotPassword/view';
-    await Directory(viewsPagesAuthForgotPasswordView).create();
-    await File('$viewsPagesAuthForgotPasswordView/forgot_password.dart')
-        .writeAsString(forgotPassword);
-
-    // views pages auth login
-    const viewsPagesAuthLogin = '$viewsPagesAuth/login';
-    await Directory(viewsPagesAuthLogin).create();
-
-    // views pages auth login binding
-    const viewsPagesAuthLoginBinding = '$viewsPagesAuthLogin/binding';
-    await Directory(viewsPagesAuthLoginBinding).create();
-    await File('$viewsPagesAuthLoginBinding/login_binding.dart')
-        .writeAsString(loginBinding);
-
-    // views pages auth login controller
-    const viewsPagesAuthLoginController = '$viewsPagesAuthLogin/controller';
-    await Directory(viewsPagesAuthLoginController).create();
-    await File('$viewsPagesAuthLoginController/login_controller.dart')
-        .writeAsString(loginController);
-
-    // views pages auth login model
-    const viewsPagesAuthLoginModel = '$viewsPagesAuthLogin/model';
-    await Directory(viewsPagesAuthLoginModel).create();
-    await File('$viewsPagesAuthLoginModel/login_model.dart')
-        .writeAsString(loginModel);
-    await File('$viewsPagesAuthLoginModel/login_model.g.dart')
-        .writeAsString(loginModelG);
-
-    // views pages auth login view
-    const viewsPagesAuthLoginView = '$viewsPagesAuthLogin/view';
-    await Directory(viewsPagesAuthLoginView).create();
-    await File('$viewsPagesAuthLoginView/login.dart').writeAsString(login);
-
-    // views pages auth newPassword
-    const viewsPagesAuthNewPassword = '$viewsPagesAuth/newPassword';
-    await Directory(viewsPagesAuthNewPassword).create();
-
-    // views pages auth newPassword binding
-    const viewsPagesAuthNewPasswordBinding =
-        '$viewsPagesAuthNewPassword/binding';
-    await Directory(viewsPagesAuthNewPasswordBinding).create();
-    await File('$viewsPagesAuthNewPasswordBinding/new_password_binding.dart')
-        .writeAsString(newPasswordBinding);
-
-    // views pages auth newPassword controller
-    const viewsPagesAuthNewPasswordController =
-        '$viewsPagesAuthNewPassword/controller';
-    await Directory(viewsPagesAuthNewPasswordController).create();
-    await File(
-            '$viewsPagesAuthNewPasswordController/new_password_controller.dart')
-        .writeAsString(newPasswordController);
-
-    // views pages auth newPassword view
-    const viewsPagesAuthNewPasswordView = '$viewsPagesAuthNewPassword/view';
-    await Directory(viewsPagesAuthNewPasswordView).create();
-    await File('$viewsPagesAuthNewPasswordView/new_password.dart')
-        .writeAsString(newPassword);
-
     // views pages auth register
     const viewsPagesAuthRegister = '$viewsPagesAuth/register';
     await Directory(viewsPagesAuthRegister).create();
@@ -385,30 +289,6 @@ class Architecture {
     const viewsPagesAuthSplashView = '$viewsPagesAuthSplash/view';
     await Directory(viewsPagesAuthSplashView).create();
     await File('$viewsPagesAuthSplashView/splash.dart').writeAsString(splash);
-
-    // views pages auth verifyCode
-    const viewsPagesAuthVerifyCode = '$viewsPagesAuth/verifyCode';
-    await Directory(viewsPagesAuthVerifyCode).create();
-
-    // views pages auth verifyCode binding
-    const viewsPagesAuthVerifyCodeBinding = '$viewsPagesAuthVerifyCode/binding';
-    await Directory(viewsPagesAuthVerifyCodeBinding).create();
-    await File('$viewsPagesAuthVerifyCodeBinding/verify_code_binding.dart')
-        .writeAsString(verifyCodeBinding);
-
-    // views pages auth verifyCode controller
-    const viewsPagesAuthVerifyCodeController =
-        '$viewsPagesAuthVerifyCode/controller';
-    await Directory(viewsPagesAuthVerifyCodeController).create();
-    await File(
-            '$viewsPagesAuthVerifyCodeController/verify_code_controller.dart')
-        .writeAsString(verifyCodeController);
-
-    // views pages auth verifyCode view
-    const viewsPagesAuthVerifyCodeView = '$viewsPagesAuthVerifyCode/view';
-    await Directory(viewsPagesAuthVerifyCodeView).create();
-    await File('$viewsPagesAuthVerifyCodeView/verify_code.dart')
-        .writeAsString(verifyCode);
 
     // views pages bottomBar
     const viewsPagesBottomBar = '$viewsPages/bottomBar';
@@ -484,9 +364,8 @@ class Architecture {
     // views pages profile view
     const viewsPagesProfileView = '$viewsPagesProfile/view';
     await Directory(viewsPagesProfileView).create();
-    await File('$viewsPagesProfileView/profile.dart').writeAsString(profile);
-    await File('$viewsPagesProfileView/profile_detail.dart')
-        .writeAsString(profileDetail);
+    await File('$viewsPagesProfileView/profile.dart')
+        .writeAsString(profile);
 
     // views widgets
     const viewsWidgets = 'lib/views/widgets';
@@ -515,70 +394,9 @@ class Architecture {
     await File('lib/main.dart').writeAsString(mainPage);
   }
 
-  static Future createAssets() async {
-
-    await Directory('assets').create();
-    await Directory('assets/fonts').create();
-    await Directory('assets/fonts/Comfortaa').create();
-    await Directory('assets/icons').create();
-    await Directory('assets/icons/png').create();
-    await Directory('assets/icons/svg').create();
-    await Directory('assets/images').create();
-    await Directory('assets/images/png').create();
-    await Directory('assets/images/svg').create();
-
-
-    // assets icons
-    const icons = 'lib/assets/icons';
-    var file = File('$icons/png/back_arrow.png');
-    var baseNameWithExtension = path.basename(file.path);
-    await moveFile(file, 'assets/icons/png/$baseNameWithExtension');
-
-    const images = 'lib/assets/images';
-
-    var file2 = File('$images/svg/forgot_password.svg');
-    var baseNameWithExtension2 = path.basename(file2.path);
-    await moveFile(file2, 'assets/images/svg/$baseNameWithExtension2');
-
-    var file3 = File('$images/svg/login.svg');
-    var baseNameWithExtension3 = path.basename(file3.path);
-    await moveFile(file3, 'assets/images/svg/$baseNameWithExtension3');
-
-    var file4 = File('$images/svg/register.svg');
-    var baseNameWithExtension4 = path.basename(file4.path);
-    await moveFile(file4, 'assets/images/svg/$baseNameWithExtension4');
-
-    // assets fonts
-    const fonts = 'lib/assets/fonts/Comfortaa';
-
-    var fFile1 = File('$fonts/Comfortaa-Bold.ttf');
-    var fBaseNameWithExtension1 = path.basename(fFile1.path);
-    await moveFile(fFile1, 'assets/fonts/Comfortaa/$fBaseNameWithExtension1');
-
-    var fFile2 = File('$fonts/Comfortaa-Light.ttf');
-    var fBaseNameWithExtension2 = path.basename(fFile2.path);
-    await moveFile(fFile2, 'assets/fonts/Comfortaa/$fBaseNameWithExtension2');
-
-    var fFile3 = File('$fonts/Comfortaa-Medium.ttf');
-    var fBaseNameWithExtension3 = path.basename(fFile3.path);
-    await moveFile(fFile3, 'assets/fonts/Comfortaa/$fBaseNameWithExtension3');
-
-    var fFile4 = File('$fonts/Comfortaa-Regular.ttf');
-    var fBaseNameWithExtension4 = path.basename(fFile4.path);
-    await moveFile(fFile4, 'assets/fonts/Comfortaa/$fBaseNameWithExtension4');
-
-    var fFile5 = File('$fonts/Comfortaa-SemiBold.ttf');
-    var fBaseNameWithExtension5 = path.basename(fFile5.path);
-    await moveFile(fFile5, 'assets/fonts/Comfortaa/$fBaseNameWithExtension5');
-  }
-
-  static Future<File> moveFile(File sourceFile, String newPath) async {
-    try {
-      return await sourceFile.rename(newPath);
-    } on FileSystemException catch (e) {
-      final newFile = await sourceFile.copy(newPath);
-      await sourceFile.delete();
-      return newFile;
-    }
+  static Future createScripts() async {
+    const scripts = 'scripts';
+    await Directory(scripts).create();
+    await File('$scripts/build.sh').writeAsString(script);
   }
 }

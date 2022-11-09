@@ -1,5 +1,4 @@
-const screenControl =
-    """
+const screenControl = """
 import 'package:flutter/services.dart';
 
 class ScreenControl {

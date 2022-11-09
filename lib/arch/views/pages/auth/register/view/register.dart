@@ -1,16 +1,12 @@
-const register =
-    """
-import '../../../../../utils/extensions/page_padding.dart';
+const register = """
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../../core/constants/app.dart';
-import '../../../../../core/constants/images.dart';
-import '../../../../../core/constants/routes.dart';
-import '../controller/register_controller.dart';
+import '../../../../../utils/extensions/page_padding.dart';
 import '../../../../widgets/auth/have_an_account.dart';
 import '../../../../widgets/custom/custom_button.dart';
 import '../../../../widgets/custom/custom_input.dart';
+import '../controller/register_controller.dart';
 import '../model/register_model.dart';
 
 class Register extends GetWidget<RegisterController> {
@@ -55,7 +51,6 @@ class Register extends GetWidget<RegisterController> {
         key: formKey,
         child: Column(
           children: [
-            buildRegisterImage(),
             buildEmailInput(),
             buildUserNameInput(),
             buildPasswordInput(),
@@ -68,10 +63,10 @@ class Register extends GetWidget<RegisterController> {
     );
   }
 
-  HaveAnAccount buildHaveAnAccount() => HaveAnAccount(
+  HaveAnAccount buildHaveAnAccount() => const HaveAnAccount(
         title: 'Do you have an account? ',
         subtitle: 'Login',
-        onTap: () => Get.toNamed(Routes.login),
+        //onTap: () => Get.toNamed(Routes.login),
       );
 
   Container buildRegisterButton() => Container(
@@ -137,11 +132,6 @@ class Register extends GetWidget<RegisterController> {
             return null;
           },
         ),
-      );
-
-  SvgPicture buildRegisterImage() => SvgPicture.asset(
-        Images.register,
-        height: Get.height * 0.4,
       );
 }
     """;

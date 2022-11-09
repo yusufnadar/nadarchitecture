@@ -1,5 +1,4 @@
-const profileController =
-    """
+const profileController = """
 import 'package:get/get.dart';
 import '../../../../core/base/base_exception.dart';
 import '../../../../core/constants/local_consts.dart';
@@ -14,7 +13,7 @@ class ProfileController extends GetxController with BaseException {
     try {
       await _localService.remove(AppLocalConsts.refreshToken);
       await _localService.remove(AppLocalConsts.accessToken);
-      await Get.offAllNamed(Routes.login);
+      await Get.offAllNamed(Routes.register);
     } catch (error) {
       showError(error);
     }

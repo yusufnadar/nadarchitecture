@@ -1,5 +1,4 @@
-const colorExtension =
-    """
+const colorExtension = """
 import 'package:flutter/material.dart';
 
 extension HexColor on Color {

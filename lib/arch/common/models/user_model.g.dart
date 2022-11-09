@@ -1,5 +1,4 @@
-const userModelG =
-    """
+const userModelG = """
 part of 'user_model.dart';
 
 UserModel _\$UserModelFromJson(Map<String, dynamic> json) => UserModel(

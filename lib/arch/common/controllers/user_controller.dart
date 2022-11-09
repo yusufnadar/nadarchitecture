@@ -1,5 +1,4 @@
-const userController =
-"""
+const userController = """
 import 'package:get/get.dart';
 import '../../core/base/base_exception.dart';
 import '../../core/constants/end_points.dart';
@@ -8,9 +7,8 @@ import '../../core/init/services/get_it_service.dart';
 import '../../core/init/services/network_service.dart';
 import '../models/user_model.dart';
 
-class UserController extends GetxController {
+class UserController extends GetxController with BaseException {
   final networkService = GetItService.getIt.get<NetworkService>();
-  final baseException = GetItService.getIt.get<BaseException>();
 
   final _user = UserModel().obs;
 
@@ -18,6 +16,7 @@ class UserController extends GetxController {
 
   set user(UserModel user) => _user.value = user;
 
+  // use after register or login method
   Future getUserForAuth() async {
     try {
       UserModel? user = await networkService
@@ -37,6 +36,7 @@ class UserController extends GetxController {
     }
   }
 
+  // use to get user
   Future getUser() async {
     try {
       UserModel? user = await networkService
@@ -50,9 +50,9 @@ class UserController extends GetxController {
         this.user = user;
       }
     } on Exception catch (error) {
-      baseException.showExceptionError(error);
+      showExceptionError(error);
     } catch (error) {
-      baseException.showError(error);
+      showError(error);
     }
   }
 }

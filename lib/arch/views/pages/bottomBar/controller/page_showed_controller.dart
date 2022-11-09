@@ -1,5 +1,4 @@
-const pageShowedController =
-    """
+const pageShowedController = """
 import 'package:get/get.dart';
 import '../consts/bottom_bar_consts.dart';
 

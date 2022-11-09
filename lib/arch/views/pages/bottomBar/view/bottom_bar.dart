@@ -1,5 +1,4 @@
-const bottomNavigationBars =
-    """
+const bottomNavigationBars = """
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../consts/bottom_bar_consts.dart';

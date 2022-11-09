@@ -1,5 +1,4 @@
-const customLoading =
-    """
+const customLoading = """
 import 'package:flutter/material.dart';
 
 class CustomLoading extends StatelessWidget {

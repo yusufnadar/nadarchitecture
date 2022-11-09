@@ -1,5 +1,6 @@
-const myAppController =
-    """
+const myAppController = """
+// to control app is background or foreground
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
