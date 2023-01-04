@@ -56,7 +56,7 @@ class RegisterController extends GetxController with BaseException {
           .setEndPoint(EndPoints.register)
           .fetch<TokenModel>(
             HttpTypes.post,
-            responseModel: TokenModel(),
+            model: TokenModel(),
           );
       if (tokenModel != null) {
         await _localService.write(

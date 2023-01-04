@@ -10,7 +10,7 @@ A Flutter package that implements the Clean Architecture by Yusuf Nadaroglu in F
 Add Nadarchitecture to your pubspec.yaml in dev_dependencies: section.
 ```yaml
 dev_dependencies:
-  nadarchitecture: ^0.0.2
+  nadarchitecture: ^0.0.4
 ```
 
 Update dependencies

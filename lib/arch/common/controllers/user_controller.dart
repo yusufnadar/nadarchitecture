@@ -24,7 +24,7 @@ class UserController extends GetxController with BaseException {
           .setEndPoint(EndPoints.getUser)
           .fetch<UserModel>(
             HttpTypes.get,
-            responseModel: UserModel(),
+            model: UserModel(),
           );
       if (user != null) {
         this.user = user;
@@ -44,7 +44,7 @@ class UserController extends GetxController with BaseException {
           .setEndPoint(EndPoints.getUser)
           .fetch<UserModel>(
             HttpTypes.get,
-            responseModel: UserModel(),
+            model: UserModel(),
           );
       if (user != null) {
         this.user = user;

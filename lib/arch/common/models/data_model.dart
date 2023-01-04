@@ -1,11 +1,9 @@
 const dataModel = """
-/*
 // if api return some values before data, you can active this model
 
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../core/base/base_model.dart';
-part 'data_model.g.dart';
 
 @JsonSerializable()
 class DataModel {
@@ -38,5 +36,4 @@ class DataModel {
         "errors": List<dynamic>.from(errors!.map((x) => x)),
       };
 }
- */
     """;

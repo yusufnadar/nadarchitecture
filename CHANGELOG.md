@@ -9,3 +9,7 @@
 ## [0.0.3] - (November 9, 2022)
 
 * Descriptions added
+
+## [0.0.4] - (January 4, 2023)
+
+* You can use multipart/form-data in Headers
