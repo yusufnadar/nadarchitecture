@@ -1,6 +1,6 @@
 name: nadarchitecture
 description: You can create a clean structure and benefit from its features
-version: 0.0.4
+version: 1.0.0
 homepage: https://github.com/yusufnadar/nadarchitecture
 
 environment:
@@ -11,20 +11,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  get: ^4.6.5
-  get_it: ^7.2.0
-  get_storage: ^2.0.3
-  flutter_svg: ^1.1.6
-  http: ^0.13.5
-  connectivity_plus: ^3.0.2
-  json_annotation: ^4.7.0
+  get_storage: ^2.1.1
+  dio: ^5.0.3
+  connectivity_plus: ^3.0.3
+  json_annotation: ^4.8.0
   internet_connection_checker: ^1.0.0+1
+  provider: ^6.0.5
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
 
-  build_runner: ^2.3.2
-  json_serializable: ^6.5.4
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.1

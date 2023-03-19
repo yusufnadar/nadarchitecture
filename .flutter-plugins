@@ -1,8 +1,8 @@
 # This is a generated file; do not edit or check into version control.
-connectivity_plus=/Users/yusufnadaroglu/src/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_plus-3.0.2/
-path_provider=/Users/yusufnadaroglu/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.11/
-path_provider_android=/Users/yusufnadaroglu/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.21/
-path_provider_ios=/Users/yusufnadaroglu/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.11/
-path_provider_linux=/Users/yusufnadaroglu/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.7/
-path_provider_macos=/Users/yusufnadaroglu/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.6/
-path_provider_windows=/Users/yusufnadaroglu/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.3/
+connectivity_plus=/Users/yusufnadaroglu/.pub-cache/hosted/pub.dev/connectivity_plus-3.0.3/
+path_provider=/Users/yusufnadaroglu/.pub-cache/hosted/pub.dev/path_provider-2.0.11/
+path_provider_android=/Users/yusufnadaroglu/.pub-cache/hosted/pub.dev/path_provider_android-2.0.21/
+path_provider_ios=/Users/yusufnadaroglu/.pub-cache/hosted/pub.dev/path_provider_ios-2.0.11/
+path_provider_linux=/Users/yusufnadaroglu/.pub-cache/hosted/pub.dev/path_provider_linux-2.1.7/
+path_provider_macos=/Users/yusufnadaroglu/.pub-cache/hosted/pub.dev/path_provider_macos-2.0.6/
+path_provider_windows=/Users/yusufnadaroglu/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.3/

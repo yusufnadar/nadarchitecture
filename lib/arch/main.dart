@@ -1,20 +1,21 @@
 const mainPage = """
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'core/constants/app.dart';
-import 'core/constants/routes.dart';
-import 'core/constants/themes.dart';
-import 'core/init/bindings/initial_bindings.dart';
-import 'core/init/controller/my_app_controller.dart';
-import 'core/init/main/init_main.dart';
-import 'core/init/services/get_it_service.dart';
-import 'core/init/services/route_service.dart';
-import 'core/init/services/theme_service.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
+import 'src/common/viewModels/theme_view_model.dart';
+import 'src/common/widgets/builder_widget.dart';
+import 'src/core/exports/constants_exports.dart';
+import 'src/core/services/navigation/navigation_route.dart';
+import 'src/core/services/navigation/navigation_service.dart';
 
-void main() async {
-  Get.put(MyAppController());
-  GetItService.setupSingletons();
-  runApp(const MyApp());
+void main() {
+  GetStorage.init();
+  runApp(
+    MultiProvider(
+      providers: AppConstants.defaultProviders,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,19 +24,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: GetMaterialApp(
+      onTap: ()=>FocusManager.instance.primaryFocus?.unfocus(),
+      child: MaterialApp(
+        title: AppConstants.appName,
+        theme: ThemeConstants.lightTheme,
+        darkTheme: ThemeConstants.darkTheme,
         debugShowCheckedModeBanner: false,
-        title: App.appName,
-        theme: Themes.lightTheme,
-        darkTheme: Themes.darkTheme,
-        builder: InitMain.builder,
-        initialBinding: InitialBindings(),
-        getPages: GetItService.getIt.get<RouteService>().pages,
-        initialRoute: Routes.splash,
-        themeMode: GetItService.getIt.get<ThemeService>().getTheme(),
+        themeMode: context.watch<ThemeViewModel>().themeMode,
+        initialRoute: NavigationConstants.home,
+        builder: (context, child) => BuilderWidget(child: child),
+        onGenerateRoute: NavigationRoute.instance.generateRoute,
+        navigatorKey: NavigationService.instance.navigatorKey,
       ),
     );
   }
 }
-    """;
+""";

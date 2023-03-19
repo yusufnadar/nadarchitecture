@@ -1,414 +1,305 @@
 library nadarchitecture;
 
-import 'dart:developer';
 import 'dart:io';
-import 'package:nadarchitecture/arch/common/models/token_model.dart';
-import 'package:nadarchitecture/arch/common/models/token_model.g.dart';
-import 'package:nadarchitecture/arch/common/models/user_model.dart';
-import 'package:nadarchitecture/arch/common/models/user_model.g.dart';
-import 'package:nadarchitecture/arch/core/base/base_exception.dart';
-import 'package:nadarchitecture/arch/core/base/base_model.dart';
-import 'package:nadarchitecture/arch/common/models/data_model.dart';
-import 'package:nadarchitecture/arch/core/constants/app.dart';
-import 'package:nadarchitecture/arch/core/constants/colors.dart';
-import 'package:nadarchitecture/arch/core/constants/end_points.dart';
-import 'package:nadarchitecture/arch/core/constants/enums/app_theme_enums.dart';
-import 'package:nadarchitecture/arch/core/constants/enums/http_type_enums.dart';
-import 'package:nadarchitecture/arch/core/constants/enums/network_result_enums.dart';
-import 'package:nadarchitecture/arch/core/constants/icons.dart';
-import 'package:nadarchitecture/arch/core/constants/images.dart';
-import 'package:nadarchitecture/arch/core/constants/local_consts.dart';
-import 'package:nadarchitecture/arch/core/constants/routes.dart';
-import 'package:nadarchitecture/arch/core/constants/themes.dart';
-import 'package:nadarchitecture/arch/core/init/bindings/initial_bindings.dart';
-import 'package:nadarchitecture/arch/core/init/controller/my_app_controller.dart';
-import 'package:nadarchitecture/arch/core/init/main/init_main.dart';
-import 'package:nadarchitecture/arch/core/init/services/get_it_service.dart';
-import 'package:nadarchitecture/arch/core/init/services/local_service.dart';
-import 'package:nadarchitecture/arch/core/init/services/network_service.dart';
-import 'package:nadarchitecture/arch/core/init/services/route_service.dart';
-import 'package:nadarchitecture/arch/core/init/services/theme_service.dart';
-import 'package:nadarchitecture/arch/core/useCases/checkNetwork/services/connectivity_service.dart';
-import 'package:nadarchitecture/arch/core/useCases/checkNetwork/services/internet_connection_checker_service.dart';
-import 'package:nadarchitecture/arch/core/useCases/checkNetwork/services/network_cache_service.dart';
-import 'package:nadarchitecture/arch/core/useCases/checkNetwork/view/no_network.dart';
+import 'package:nadarchitecture/arch/common/viewModels/connection_view_model.dart';
+import 'package:nadarchitecture/arch/common/viewModels/theme_view_model.dart';
+import 'package:nadarchitecture/arch/common/widgets/builder_widget.dart';
+import 'package:nadarchitecture/arch/core/base/view/base_view.dart';
+import 'package:nadarchitecture/arch/core/base/viewModel/base_view_model.dart';
+import 'package:nadarchitecture/arch/core/constants/app/app_constants.dart';
+import 'package:nadarchitecture/arch/core/constants/enums/app_themes_enums.dart';
+import 'package:nadarchitecture/arch/core/constants/enums/http_types_enums.dart';
+import 'package:nadarchitecture/arch/core/constants/enums/network_results_enums.dart';
+import 'package:nadarchitecture/arch/core/constants/icons/icon_constants.dart';
+import 'package:nadarchitecture/arch/core/constants/local/local_constants.dart';
+import 'package:nadarchitecture/arch/core/constants/navigation/navigation_constants.dart';
+import 'package:nadarchitecture/arch/core/constants/textStyles/text_style_constants.dart';
+import 'package:nadarchitecture/arch/core/constants/theme/theme_constants.dart';
+import 'package:nadarchitecture/arch/core/exports/constants_exports.dart';
+import 'package:nadarchitecture/arch/core/extensions/context_extension.dart';
+import 'package:nadarchitecture/arch/core/extensions/sized_box_extension.dart';
+import 'package:nadarchitecture/arch/core/mixins/device_orientation.dart';
+import 'package:nadarchitecture/arch/core/mixins/show_bar.dart';
+import 'package:nadarchitecture/arch/core/services/connection/connection_service.dart';
+import 'package:nadarchitecture/arch/core/services/connection/packages/connectivity_service.dart';
+import 'package:nadarchitecture/arch/core/services/connection/packages/internet_connection_checker_service.dart';
+import 'package:nadarchitecture/arch/core/services/local/local_service.dart';
+import 'package:nadarchitecture/arch/core/services/navigation/navigation_route.dart';
+import 'package:nadarchitecture/arch/core/services/navigation/navigation_service.dart';
+import 'package:nadarchitecture/arch/core/services/network/network_service.dart';
+import 'package:nadarchitecture/arch/core/services/network/response_parser.dart';
+import 'package:nadarchitecture/arch/core/services/notification/notification_service.dart';
+import 'package:nadarchitecture/arch/core/services/size/size_service.dart';
+import 'package:nadarchitecture/arch/core/services/theme/theme_service.dart';
 import 'package:nadarchitecture/arch/main.dart';
-import 'package:nadarchitecture/arch/utils/extensions/color_extension.dart';
-import 'package:nadarchitecture/arch/utils/extensions/page_padding.dart';
-import 'package:nadarchitecture/arch/utils/helpers/get_snackbars.dart';
-import 'package:nadarchitecture/arch/utils/helpers/screen_up_down.dart';
-import 'package:nadarchitecture/arch/utils/helpers/sized_boxes.dart';
-import 'package:nadarchitecture/arch/utils/helpers/text_styles.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/register/binding/register_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/register/controller/register_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/register/model/register_model.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/register/model/register_model.g.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/register/view/register.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/splash/binding/splash_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/splash/controller/splash_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/auth/splash/view/splash.dart';
-import 'package:nadarchitecture/arch/views/pages/bottomBar/binding/bottom_navigation_bar_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/bottomBar/consts/bottom_bar_consts.dart';
-import 'package:nadarchitecture/arch/views/pages/bottomBar/controller/bottom_navigation_bar_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/bottomBar/controller/page_showed_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/bottomBar/enums/bottom_bar_enums.dart';
-import 'package:nadarchitecture/arch/views/pages/bottomBar/view/bottom_bar.dart';
-import 'package:nadarchitecture/arch/views/pages/home/view/home_detail.dart';
-import 'package:nadarchitecture/arch/views/pages/home/view/home_page.dart';
-import 'package:nadarchitecture/arch/views/pages/profile/binding/profile_binding.dart';
-import 'package:nadarchitecture/arch/views/pages/profile/controller/profile_controller.dart';
-import 'package:nadarchitecture/arch/views/pages/profile/view/profile.dart';
-import 'package:nadarchitecture/arch/views/widgets/auth/have_an_account.dart';
-import 'package:nadarchitecture/arch/views/widgets/custom/custom_back_button.dart';
-import 'package:nadarchitecture/arch/views/widgets/custom/custom_button.dart';
-import 'package:nadarchitecture/arch/views/widgets/custom/custom_input.dart';
-import 'package:nadarchitecture/arch/views/widgets/custom/custom_loading.dart';
-import 'arch/common/controllers/user_controller.dart';
-import 'arch/core/init/exceptions/http_exceptions.dart';
-import 'arch/core/useCases/checkNetwork/controller/network_cache_controller.dart';
-import 'arch/views/pages/bottomBar/widgets/page_showed.dart';
+import 'package:nadarchitecture/arch/pages/home/model/post_model.dart';
+import 'package:nadarchitecture/arch/pages/home/model/post_model.g.dart';
+import 'package:nadarchitecture/arch/pages/home/widget/one_item.dart';
+import 'arch/common/models/pagination_model.dart';
+import 'arch/common/widgets/no_network_widget.dart';
+import 'arch/core/base/error/base_error.dart';
+import 'arch/core/base/model/base_model.dart';
+import 'arch/core/base/state/base_state.dart';
+import 'arch/core/constants/colors/color_constants.dart';
+import 'arch/core/constants/endPoints/end_point_constants.dart';
+import 'arch/core/constants/images/image_constants.dart';
+import 'arch/core/services/network/response_model.dart';
+import 'arch/pages/home/view/home_view.dart';
+import 'arch/pages/home/viewModel/home_view_model.dart';
 import 'scripts/build_sh.dart';
 
 class Architecture {
   static Future<void> createArchitecture() async {
+    const srcFolder = 'lib/src';
+    await Directory(srcFolder).create();
     await createCommon();
     await createCore();
-    await createUtils();
-    await createViews();
+    await createPages();
     await createMain();
     await createScripts();
-    print('Package installed successfully');
   }
 
   static Future createCommon() async {
-    const common = 'lib/common';
+    const common = 'lib/src/common';
     await Directory(common).create();
 
-    // controllers
-    const controllers = '$common/controllers';
+    // viewModels
+    const controllers = '$common/viewModels';
     await Directory(controllers).create();
-    await File('$controllers/user_controller.dart')
-        .writeAsString(userController);
+    await File('$controllers/connection_view_model.dart')
+        .writeAsString(connectionViewModel);
+    await File('$controllers/theme_view_model.dart')
+        .writeAsString(themeViewModel);
 
     // models
     const models = '$common/models';
     await Directory(models).create();
-    await File('$models/token_model.dart').writeAsString(tokenModel);
-    await File('$models/token_model.g.dart').writeAsString(tokenModelG);
-    await File('$models/user_model.dart').writeAsString(userModel);
-    await File('$models/user_model.g.dart').writeAsString(userModelG);
-    await File('$models/data_model.dart').writeAsString(dataModel);
-    print('Common folder created');
+    await File('$models/pagination_model.dart').writeAsString(paginationModel);
+
+    // widgets
+    const widgets = '$common/widgets';
+    await Directory(widgets).create();
+    await File('$widgets/builder_widget.dart').writeAsString(builderWidget);
+    await File('$widgets/no_network_widget.dart')
+        .writeAsString(noNetworkWidget);
   }
 
   static Future createCore() async {
-    const core = 'lib/core';
+    const core = 'lib/src/core';
     await Directory(core).create();
 
     // base
     const base = '$core/base';
     await Directory(base).create();
-    await File('$base/base_exception.dart').writeAsString(baseException);
-    await File('$base/base_model.dart').writeAsString(baseModel);
+
+    // base error
+    const baseErrorI = '$base/error';
+    await Directory(baseErrorI).create();
+    await File('$baseErrorI/base_error.dart').writeAsString(baseError);
+
+    // base model
+    const baseModelI = '$base/model';
+    await Directory(baseModelI).create();
+    await File('$baseModelI/base_model.dart').writeAsString(baseModel);
+
+    // base state
+    const baseStateI = '$base/state';
+    await Directory(baseStateI).create();
+    await File('$baseStateI/base_state.dart').writeAsString(baseState);
+
+    // base view
+    const baseViewI = '$base/view';
+    await Directory(baseViewI).create();
+    await File('$baseViewI/base_view.dart').writeAsString(baseView);
+
+    // base view model
+    const baseViewModelI = '$base/viewModel';
+    await Directory(baseViewModelI).create();
+    await File('$baseViewModelI/base_view_model.dart')
+        .writeAsString(baseViewModel);
 
     // constants
     const constants = '$core/constants';
-    const constantsEnums = '$core/constants/enums';
     await Directory(constants).create();
 
-    // constants enums
-    await Directory(constantsEnums).create();
-    await File('$constantsEnums/app_theme_enums.dart')
-        .writeAsString(appThemeEnums);
-    await File('$constantsEnums/http_type_enums.dart')
-        .writeAsString(httpTypeEnums);
-    await File('$constantsEnums/network_result_enums.dart')
+    // app constants
+    const appConstantsI = '$constants/app';
+    await Directory(appConstantsI).create();
+    await File('$appConstantsI/app_constants.dart').writeAsString(appConstants);
+
+    // color constants
+    const colorConstantsI = '$constants/colors';
+    await Directory(colorConstantsI).create();
+    await File('$colorConstantsI/color_constants.dart')
+        .writeAsString(colorConstants);
+
+    // endPoint constants
+    const endPointConstantsI = '$constants/endPoints';
+    await Directory(endPointConstantsI).create();
+    await File('$endPointConstantsI/end_point_constants.dart')
+        .writeAsString(endPointConstants);
+
+    // enums
+    const enums = '$constants/enums';
+    await Directory(enums).create();
+    await File('$enums/app_themes_enums.dart').writeAsString(appThemesEnums);
+    await File('$enums/http_types_enums.dart').writeAsString(httpTypesEnums);
+    await File('$enums/network_results_enums.dart')
         .writeAsString(networkResultEnums);
 
-    // just constants
-    await File('$constants/app.dart').writeAsString(app);
-    await File('$constants/colors.dart').writeAsString(colors);
-    await File('$constants/end_points.dart').writeAsString(endPoints);
-    await File('$constants/icons.dart').writeAsString(appIcons);
-    await File('$constants/images.dart').writeAsString(images);
-    await File('$constants/local_consts.dart').writeAsString(appLocalConsts);
-    await File('$constants/routes.dart').writeAsString(routes);
-    await File('$constants/themes.dart').writeAsString(themes);
+    // icon constants
+    const iconConstantsI = '$constants/icons';
+    await Directory(iconConstantsI).create();
+    await File('$iconConstantsI/icon_constants.dart')
+        .writeAsString(iconConstants);
 
-    // init
-    const coreInit = '$core/init';
-    await Directory(coreInit).create();
+    // image constants
+    const imageConstantsI = '$constants/images';
+    await Directory(imageConstantsI).create();
+    await File('$imageConstantsI/image_constants.dart')
+        .writeAsString(imageConstants);
 
-    // init bindings
-    const coreInitBindings = '$coreInit/bindings';
-    await Directory(coreInitBindings).create();
-    await File('$coreInitBindings/initial_bindings.dart')
-        .writeAsString(initialBindings);
+    // image constants
+    const navigationConstantsI = '$constants/navigation';
+    await Directory(navigationConstantsI).create();
+    await File('$navigationConstantsI/navigation_constants.dart')
+        .writeAsString(navigationConstants);
 
-    // init controller
-    const coreInitController = '$coreInit/controller';
-    await Directory(coreInitController).create();
-    await File('$coreInitController/my_app_controller.dart')
-        .writeAsString(myAppController);
+    // image constants
+    const testStyleConstantsI = '$constants/textStyles';
+    await Directory(testStyleConstantsI).create();
+    await File('$testStyleConstantsI/text_style_constants.dart')
+        .writeAsString(textStyleConstants);
 
-    // init exceptions
+    // image constants
+    const themeConstantsI = '$constants/theme';
+    await Directory(themeConstantsI).create();
+    await File('$themeConstantsI/theme_constants.dart')
+        .writeAsString(themeConstants);
 
-    const coreInitExceptions = '$coreInit/exceptions';
-    await Directory(coreInitExceptions).create();
-    await File('$coreInitExceptions/http_exceptions.dart')
-        .writeAsString(httpExceptions);
+    // image constants
+    const localConstantsI = '$constants/local';
+    await Directory(localConstantsI).create();
+    await File('$localConstantsI/local_constants.dart')
+        .writeAsString(localConstants);
 
-    // init main
-    const coreInitMains = '$coreInit/main';
-    await Directory(coreInitMains).create();
-    await File('$coreInitMains/init_main.dart').writeAsString(initMain);
+    // exports
+    const exports = '$core/exports';
+    await Directory(exports).create();
+    await File('$exports/constants_exports.dart')
+        .writeAsString(constantExports);
 
-    // init services
-    const coreInitService = '$coreInit/services';
-    await Directory(coreInitService).create();
-    await File('$coreInitService/get_it_service.dart')
-        .writeAsString(getItService);
-    await File('$coreInitService/local_service.dart')
-        .writeAsString(localService);
-    await File('$coreInitService/network_service.dart')
-        .writeAsString(networkService);
-    await File('$coreInitService/route_service.dart')
-        .writeAsString(routeService);
-    await File('$coreInitService/theme_service.dart')
-        .writeAsString(themeService);
+    // extensions
+    const extensions = '$core/extensions';
+    await Directory(extensions).create();
+    await File('$extensions/context_extension.dart')
+        .writeAsString(contextExtension);
+    await File('$extensions/sized_box_extension.dart')
+        .writeAsString(sizedBoxExtension);
 
-    // useCases
-    const useCases = '$core/useCases';
-    const useCasesCheckNetwork = '$useCases/checkNetwork';
-    await Directory(useCases).create();
-    await Directory(useCasesCheckNetwork).create();
+    // mixins
+    const mixins = '$core/mixins';
+    await Directory(mixins).create();
+    await File('$mixins/device_orientation.dart')
+        .writeAsString(deviceOrientation);
+    await File('$mixins/show_bar.dart').writeAsString(showBar);
 
-    // checkNetwork controller
-    const useCasesCheckNetworkController = '$useCasesCheckNetwork/controller';
-    await Directory(useCasesCheckNetworkController).create();
-    await File('$useCasesCheckNetworkController/network_cache_controller.dart')
-        .writeAsString(networkCacheController);
+    // services
+    const services = '$core/services';
+    await Directory(services).create();
 
-    // checkNetwork services
-    const useCasesCheckNetworkServices = '$useCasesCheckNetwork/services';
-    await Directory(useCasesCheckNetworkServices).create();
-    await File('$useCasesCheckNetworkServices/connectivity_service.dart')
+    // connection service
+    const connectionServiceI = '$services/connection';
+    await Directory(connectionServiceI).create();
+    await File('$connectionServiceI/connection_service.dart')
+        .writeAsString(connectionService);
+
+    const connectionServicesPackages = '$connectionServiceI/packages';
+    await Directory(connectionServicesPackages).create();
+    await File('$connectionServicesPackages/connectivity_service.dart')
         .writeAsString(connectivityService);
     await File(
-            '$useCasesCheckNetworkServices/internet_connection_checker_service.dart')
+            '$connectionServicesPackages/internet_connection_checker_service.dart')
         .writeAsString(internetConnectionCheckerService);
-    await File('$useCasesCheckNetworkServices/network_cache_service.dart')
-        .writeAsString(networkCacheService);
 
-    // checkNetwork view
-    const useCasesCheckNetworkView = '$useCasesCheckNetwork/view';
-    await Directory(useCasesCheckNetworkView).create();
-    await File('$useCasesCheckNetworkView/no_network.dart')
-        .writeAsString(noNetworkWidget);
+    // local service
+    const localServiceI = '$services/local';
+    await Directory(localServiceI).create();
+    await File('$localServiceI/local_service.dart').writeAsString(localService);
 
-    print('Core folder created');
+    // navigation service
+    const navigationServiceI = '$services/navigation';
+    await Directory(navigationServiceI).create();
+    await File('$navigationServiceI/navigation_service.dart')
+        .writeAsString(navigationService);
+    await File('$navigationServiceI/navigation_route.dart')
+        .writeAsString(navigationRoute);
+
+    // network service
+    const networkServiceI = '$services/network';
+    await Directory(networkServiceI).create();
+    await File('$networkServiceI/response_model.dart')
+        .writeAsString(iResponseModel);
+    await File('$networkServiceI/network_service.dart')
+        .writeAsString(networkService);
+    await File('$networkServiceI/response_parser.dart')
+        .writeAsString(responseParser);
+
+    // notification service
+    const notificationServiceI = '$services/notification';
+    await Directory(notificationServiceI).create();
+    await File('$notificationServiceI/notification_service.dart')
+        .writeAsString(notificationService);
+
+    // size service
+    const sizeServiceI = '$services/size';
+    await Directory(sizeServiceI).create();
+    await File('$sizeServiceI/size_service.dart').writeAsString(sizeService);
+
+    // theme service
+    const themeServiceI = '$services/theme';
+    await Directory(themeServiceI).create();
+    await File('$themeServiceI/theme_service.dart').writeAsString(themeService);
   }
 
-  static Future createUtils() async {
-    const utils = 'lib/utils';
-    await Directory(utils).create();
+  static Future createPages() async {
+    const pages = 'lib/src/pages';
+    await Directory(pages).create();
 
-    // utils extension
-    const utilsExtensions = '$utils/extensions';
-    await Directory(utilsExtensions).create();
-    await File('$utilsExtensions/color_extension.dart')
-        .writeAsString(colorExtension);
-    await File('$utilsExtensions/page_padding.dart')
-        .writeAsString(pagePaddingExtension);
+    // home page
+    const homePage = '$pages/home';
+    await Directory(homePage).create();
 
-    // utils helpers
-    const utilsHelpers = '$utils/helpers';
-    await Directory(utilsHelpers).create();
-    await File('$utilsHelpers/get_snackbars.dart').writeAsString(getBars);
-    await File('$utilsHelpers/screen_up_down.dart')
-        .writeAsString(screenControl);
-    await File('$utilsHelpers/sized_boxes.dart').writeAsString(sizedBoxes);
-    await File('$utilsHelpers/text_styles.dart').writeAsString(styles);
+    // home model
+    const homeModel = '$homePage/model';
+    await Directory(homeModel).create();
+    await File('$homeModel/post_model.dart').writeAsString(postModel);
+    await File('$homeModel/post_model.g.dart').writeAsString(postModelG);
 
-    print('Utils folder created');
-  }
+    // home view
+    const homeViewI = '$homePage/view';
+    await Directory(homeViewI).create();
+    await File('$homeViewI/home_view.dart').writeAsString(homeView);
 
-  static Future createViews() async {
-    const views = 'lib/views';
-    await Directory(views).create();
+    // home viewModel
+    const homeViewModelI = '$homePage/viewModel';
+    await Directory(homeViewModelI).create();
+    await File('$homeViewModelI/home_view_model.dart')
+        .writeAsString(homeViewModel);
 
-    // views pages
-    const viewsPages = 'lib/views/pages';
-    await Directory(viewsPages).create();
-
-    // views pages auth
-    const viewsPagesAuth = 'lib/views/pages/auth';
-    await Directory(viewsPagesAuth).create();
-
-    // views pages auth register
-    const viewsPagesAuthRegister = '$viewsPagesAuth/register';
-    await Directory(viewsPagesAuthRegister).create();
-
-    // views pages auth register binding
-    const viewsPagesAuthRegisterBinding = '$viewsPagesAuthRegister/binding';
-    await Directory(viewsPagesAuthRegisterBinding).create();
-    await File('$viewsPagesAuthRegisterBinding/register_binding.dart')
-        .writeAsString(registerBinding);
-
-    // views pages auth register controller
-    const viewsPagesAuthRegisterController =
-        '$viewsPagesAuthRegister/controller';
-    await Directory(viewsPagesAuthRegisterController).create();
-    await File('$viewsPagesAuthRegisterController/register_controller.dart')
-        .writeAsString(registerController);
-
-    // views pages auth register model
-    const viewsPagesAuthRegisterModel = '$viewsPagesAuthRegister/model';
-    await Directory(viewsPagesAuthRegisterModel).create();
-    await File('$viewsPagesAuthRegisterModel/register_model.dart')
-        .writeAsString(registerModel);
-    await File('$viewsPagesAuthRegisterModel/register_model.g.dart')
-        .writeAsString(registerModelG);
-
-    // views pages auth register view
-    const viewsPagesAuthRegisterView = '$viewsPagesAuthRegister/view';
-    await Directory(viewsPagesAuthRegisterView).create();
-    await File('$viewsPagesAuthRegisterView/register.dart')
-        .writeAsString(register);
-
-    // views pages auth splash
-    const viewsPagesAuthSplash = '$viewsPagesAuth/splash';
-    await Directory(viewsPagesAuthSplash).create();
-
-    // views pages auth splash binding
-    const viewsPagesAuthSplashBinding = '$viewsPagesAuthSplash/binding';
-    await Directory(viewsPagesAuthSplashBinding).create();
-    await File('$viewsPagesAuthSplashBinding/splash_binding.dart')
-        .writeAsString(splashBinding);
-
-    // views pages auth splash controller
-    const viewsPagesAuthSplashController = '$viewsPagesAuthSplash/controller';
-    await Directory(viewsPagesAuthSplashController).create();
-    await File('$viewsPagesAuthSplashController/splash_controller.dart')
-        .writeAsString(splashController);
-
-    // views pages auth splash view
-    const viewsPagesAuthSplashView = '$viewsPagesAuthSplash/view';
-    await Directory(viewsPagesAuthSplashView).create();
-    await File('$viewsPagesAuthSplashView/splash.dart').writeAsString(splash);
-
-    // views pages bottomBar
-    const viewsPagesBottomBar = '$viewsPages/bottomBar';
-    await Directory(viewsPagesBottomBar).create();
-
-    // views pages bottomBar binding
-    const viewsPagesAuthBottomBarBinding = '$viewsPagesBottomBar/binding';
-    await Directory(viewsPagesAuthBottomBarBinding).create();
-    await File(
-            '$viewsPagesAuthBottomBarBinding/bottom_navigation_bar_binding.dart')
-        .writeAsString(bottomNavigationBarBinding);
-
-    // views pages bottomBar consts
-    const viewsPagesAuthBottomBarConsts = '$viewsPagesBottomBar/consts';
-    await Directory(viewsPagesAuthBottomBarConsts).create();
-    await File('$viewsPagesAuthBottomBarConsts/bottom_bar_consts.dart')
-        .writeAsString(bottomBarConsts);
-
-    // views pages bottomBar controller
-    const viewsPagesAuthBottomBarController = '$viewsPagesBottomBar/controller';
-    await Directory(viewsPagesAuthBottomBarController).create();
-    await File(
-            '$viewsPagesAuthBottomBarController/bottom_navigation_bar_controller.dart')
-        .writeAsString(bottomNavigationBarController);
-    await File('$viewsPagesAuthBottomBarController/page_showed_controller.dart')
-        .writeAsString(pageShowedController);
-
-    // views pages bottomBar enums
-    const viewsPagesAuthBottomBarEnums = '$viewsPagesBottomBar/enums';
-    await Directory(viewsPagesAuthBottomBarEnums).create();
-    await File('$viewsPagesAuthBottomBarEnums/bottom_bar_enums.dart')
-        .writeAsString(bottomBarEnums);
-
-    // views pages bottomBar view
-    const viewsPagesAuthBottomBarView = '$viewsPagesBottomBar/view';
-    await Directory(viewsPagesAuthBottomBarView).create();
-    await File('$viewsPagesAuthBottomBarView/bottom_bar.dart')
-        .writeAsString(bottomNavigationBars);
-
-    // views pages bottomBar widgets
-    const viewsPagesAuthBottomBarWidgets = '$viewsPagesBottomBar/widgets';
-    await Directory(viewsPagesAuthBottomBarWidgets).create();
-    await File('$viewsPagesAuthBottomBarWidgets/page_showed.dart')
-        .writeAsString(pageShowed);
-
-    // views pages home
-    const viewsPagesHome = '$viewsPages/home';
-    await Directory(viewsPagesHome).create();
-
-    // views pages home view
-    const viewsPagesHomeView = '$viewsPagesHome/view';
-    await Directory(viewsPagesHomeView).create();
-    await File('$viewsPagesHomeView/home_detail.dart')
-        .writeAsString(detailPage);
-    await File('$viewsPagesHomeView/home_page.dart').writeAsString(homePage);
-
-    // views pages profile
-    const viewsPagesProfile = '$viewsPages/profile';
-    await Directory(viewsPagesProfile).create();
-
-    // views pages profile binding
-    const viewsPagesProfileBindings = '$viewsPagesProfile/binding';
-    await Directory(viewsPagesProfileBindings).create();
-    await File('$viewsPagesProfileBindings/profile_binding.dart')
-        .writeAsString(profileBinding);
-
-    // views pages profile controller
-    const viewsPagesProfileController = '$viewsPagesProfile/controller';
-    await Directory(viewsPagesProfileController).create();
-    await File('$viewsPagesProfileController/profile_controller.dart')
-        .writeAsString(profileController);
-
-    // views pages profile view
-    const viewsPagesProfileView = '$viewsPagesProfile/view';
-    await Directory(viewsPagesProfileView).create();
-    await File('$viewsPagesProfileView/profile.dart')
-        .writeAsString(profile);
-
-    // views widgets
-    const viewsWidgets = 'lib/views/widgets';
-    await Directory(viewsWidgets).create();
-
-    // views widgets auth
-    const viewsWidgetsAuth = '$viewsWidgets/auth';
-    await Directory(viewsWidgetsAuth).create();
-    await File('$viewsWidgetsAuth/have_an_account.dart')
-        .writeAsString(haveAnAccount);
-
-    // views widgets custom
-    const viewsWidgetsCustom = '$viewsWidgets/custom';
-    await Directory(viewsWidgetsCustom).create();
-    await File('$viewsWidgetsCustom/custom_back_button.dart')
-        .writeAsString(customBackButton);
-    await File('$viewsWidgetsCustom/custom_button.dart')
-        .writeAsString(customButton);
-    await File('$viewsWidgetsCustom/custom_input.dart')
-        .writeAsString(customInput);
-    await File('$viewsWidgetsCustom/custom_loading.dart')
-        .writeAsString(customLoading);
-
-    print('Views folder created');
+    // home widget
+    const homeWidget = '$homePage/widget';
+    await Directory(homeWidget).create();
+    await File('$homeWidget/one_item.dart').writeAsString(oneItem);
   }
 
   static Future createMain() async {
     await File('lib/main.dart').writeAsString(mainPage);
-    print('Main file created');
   }
 
   static Future createScripts() async {
     const scripts = 'scripts';
     await Directory(scripts).create();
     await File('$scripts/build.sh').writeAsString(script);
-
-    print('Scripts folder created');
   }
 }
