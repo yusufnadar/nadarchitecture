@@ -1,1 +1,0 @@
-enum NetworkResult { on, off }
