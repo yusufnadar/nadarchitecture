@@ -17,3 +17,7 @@
 ## [1.0.0] - (19.03.2023)
 
 * Architecture completely changed
+
+## [1.0.1] - (19.03.2023)
+
+* Some bugs fixed

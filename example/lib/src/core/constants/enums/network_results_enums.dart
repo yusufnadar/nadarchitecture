@@ -1,0 +1,1 @@
+enum NetworkResult { on, off }
