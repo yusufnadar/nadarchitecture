@@ -4,11 +4,11 @@ import '../../../core/exports/constants_exports.dart';
 import '../../../core/mixins/show_bar.dart';
 import '../model/post_model.dart';
 
-class HomeViewModel extends ChangeNotifier with BaseViewModel,ShowBar {
+class HomeViewModel extends ChangeNotifier with BaseViewModel, ShowBar {
   List<PostModel> posts = <PostModel>[];
 
   Future<void> get() async {
-    try{
+    try {
       var res = await networkService!.send<PostModel, List<PostModel>>(
         EndPointConstants.posts,
         type: HttpTypes.get,
@@ -18,7 +18,7 @@ class HomeViewModel extends ChangeNotifier with BaseViewModel,ShowBar {
         posts = res.data!;
         notifyListeners();
       }
-    }catch(error){
+    } catch (error) {
       showErrorBar(viewModelContext, error);
     }
   }

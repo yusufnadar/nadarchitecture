@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_classes_with_only_static_members
+
 library nadarchitecture;
 
 import 'dart:io';
+
 import '../../arch/common/viewModels/connection_view_model.dart';
 import '../../arch/common/viewModels/theme_view_model.dart';
 import '../../arch/common/widgets/builder_widget.dart';
@@ -20,9 +23,6 @@ import '../../arch/core/extensions/context_extension.dart';
 import '../../arch/core/extensions/sized_box_extension.dart';
 import '../../arch/core/mixins/device_orientation.dart';
 import '../../arch/core/mixins/show_bar.dart';
-import '../../arch/core/services/connection/connection_service.dart';
-import '../../arch/core/services/connection/packages/connectivity_service.dart';
-import '../../arch/core/services/connection/packages/internet_connection_checker_service.dart';
 import '../../arch/core/services/local/local_service.dart';
 import '../../arch/core/services/navigation/navigation_route.dart';
 import '../../arch/core/services/navigation/navigation_service.dart';
@@ -59,7 +59,7 @@ class Architecture {
     await createScripts();
   }
 
-  static Future createCommon() async {
+  static Future<void> createCommon() async {
     const common = 'lib/src/common';
     await Directory(common).create();
 
@@ -84,7 +84,7 @@ class Architecture {
         .writeAsString(noNetworkWidget);
   }
 
-  static Future createCore() async {
+  static Future<void> createCore() async {
     const core = 'lib/src/core';
     await Directory(core).create();
 
@@ -209,6 +209,7 @@ class Architecture {
     await Directory(services).create();
 
     // connection service
+    /*
     const connectionServiceI = '$services/connection';
     await Directory(connectionServiceI).create();
     await File('$connectionServiceI/connection_service.dart')
@@ -221,6 +222,7 @@ class Architecture {
     await File(
             '$connectionServicesPackages/internet_connection_checker_service.dart')
         .writeAsString(internetConnectionCheckerService);
+     */
 
     // local service
     const localServiceI = '$services/local';
@@ -262,7 +264,7 @@ class Architecture {
     await File('$themeServiceI/theme_service.dart').writeAsString(themeService);
   }
 
-  static Future createPages() async {
+  static Future<void> createPages() async {
     const pages = 'lib/src/pages';
     await Directory(pages).create();
 
@@ -293,11 +295,11 @@ class Architecture {
     await File('$homeWidget/one_item.dart').writeAsString(oneItem);
   }
 
-  static Future createMain() async {
+  static Future<void> createMain() async {
     await File('lib/main.dart').writeAsString(mainPage);
   }
 
-  static Future createScripts() async {
+  static Future<void> createScripts() async {
     const scripts = 'scripts';
     await Directory(scripts).create();
     await File('$scripts/build.sh').writeAsString(script);

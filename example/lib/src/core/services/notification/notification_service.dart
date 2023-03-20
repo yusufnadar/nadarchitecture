@@ -1,1 +1,1 @@
-class NotificationService{}
+class NotificationService {}

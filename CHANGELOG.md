@@ -25,3 +25,11 @@
 ## [1.0.2] - (19.03.2023)
 
 * Some bugs fixed about lints
+
+## [1.0.3] - (20.03.2023)
+
+* Some bugs fixed about lints
+
+## [1.0.4] - (20.03.2023)
+
+* Connection Service removed

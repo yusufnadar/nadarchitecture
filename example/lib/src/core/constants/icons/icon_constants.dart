@@ -1,3 +1,3 @@
-class IconConstants{
+class IconConstants {
   //static const home = 'assets/icons/home.svg';
 }

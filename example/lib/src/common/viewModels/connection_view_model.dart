@@ -10,4 +10,3 @@ class ConnectionViewModel extends ChangeNotifier with BaseViewModel {
     notifyListeners();
   }
 }
- 

@@ -35,4 +35,3 @@ class PaginationModel<T extends BaseModel> {
         ),
       };
 }
-    

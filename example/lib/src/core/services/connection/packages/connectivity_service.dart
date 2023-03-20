@@ -29,11 +29,11 @@ class ConnectivityService {
         case ConnectivityResult.vpn:
           // eğer kaynak değişiminde internet varsa direkt bağlansın diye
           // connected kısmını beklemeden true yapıyoruz
-          checkerService.checkInternet(true,context);
+          checkerService.checkInternet(true, context);
           break;
         case ConnectivityResult.none:
         case ConnectivityResult.other:
-          checkerService.checkInternet(false,context);
+          checkerService.checkInternet(false, context);
           break;
       }
     });
