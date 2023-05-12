@@ -33,3 +33,7 @@
 ## [1.0.4] - (20.03.2023)
 
 * Connection Service removed
+
+## [1.0.5] - (12.05.2023)
+
+* Pagination model added and network service completely changed

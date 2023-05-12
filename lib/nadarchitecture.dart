@@ -6,7 +6,7 @@ import 'dart:io';
 
 import '../../arch/common/viewModels/connection_view_model.dart';
 import '../../arch/common/viewModels/theme_view_model.dart';
-import '../../arch/common/widgets/builder_widget.dart';
+
 import '../../arch/core/base/view/base_view.dart';
 import '../../arch/core/base/viewModel/base_view_model.dart';
 import '../../arch/core/constants/app/app_constants.dart';
@@ -36,14 +36,12 @@ import '../../arch/pages/home/model/post_model.dart';
 import '../../arch/pages/home/model/post_model.g.dart';
 import '../../arch/pages/home/widget/one_item.dart';
 import 'arch/common/models/pagination_model.dart';
-import 'arch/common/widgets/no_network_widget.dart';
 import 'arch/core/base/error/base_error.dart';
 import 'arch/core/base/model/base_model.dart';
 import 'arch/core/base/state/base_state.dart';
 import 'arch/core/constants/colors/color_constants.dart';
 import 'arch/core/constants/endPoints/end_point_constants.dart';
 import 'arch/core/constants/images/image_constants.dart';
-import 'arch/core/services/network/response_model.dart';
 import 'arch/pages/home/view/home_view.dart';
 import 'arch/pages/home/viewModel/home_view_model.dart';
 import 'scripts/build_sh.dart';
@@ -75,13 +73,6 @@ class Architecture {
     const models = '$common/models';
     await Directory(models).create();
     await File('$models/pagination_model.dart').writeAsString(paginationModel);
-
-    // widgets
-    const widgets = '$common/widgets';
-    await Directory(widgets).create();
-    await File('$widgets/builder_widget.dart').writeAsString(builderWidget);
-    await File('$widgets/no_network_widget.dart')
-        .writeAsString(noNetworkWidget);
   }
 
   static Future<void> createCore() async {
@@ -240,8 +231,6 @@ class Architecture {
     // network service
     const networkServiceI = '$services/network';
     await Directory(networkServiceI).create();
-    await File('$networkServiceI/response_model.dart')
-        .writeAsString(iResponseModel);
     await File('$networkServiceI/network_service.dart')
         .writeAsString(networkService);
     await File('$networkServiceI/response_parser.dart')

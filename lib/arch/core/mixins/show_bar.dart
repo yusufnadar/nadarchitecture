@@ -1,10 +1,20 @@
 const showBar = """
 import 'package:flutter/material.dart';
+
 import '../exports/constants_exports.dart';
+import '../services/navigation/navigation_service.dart';
 
 mixin ShowBar {
-  void showErrorBar(context, message, {duration, backgroundColor, style}) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  void showErrorBar(
+    dynamic message, {
+    Duration? duration,
+    Color? backgroundColor,
+    TextStyle? style,
+    BuildContext? context,
+  }) {
+    ScaffoldMessenger.of(
+            context ?? NavigationService.instance.navigatorKey.currentContext!)
+        .showSnackBar(
       SnackBar(
         content: Text(
           message.toString(),
@@ -19,8 +29,16 @@ mixin ShowBar {
     );
   }
 
-  void showSuccessBar(context, message, {duration, backgroundColor, style}) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  void showSuccessBar(
+    dynamic message, {
+    Duration? duration,
+    Color? backgroundColor,
+    TextStyle? style,
+    BuildContext? context,
+  }) {
+    ScaffoldMessenger.of(
+            context ?? NavigationService.instance.navigatorKey.currentContext!)
+        .showSnackBar(
       SnackBar(
         content: Text(
           message.toString(),
@@ -35,4 +53,5 @@ mixin ShowBar {
     );
   }
 }
+
 """;
