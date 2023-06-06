@@ -1,4 +1,3 @@
-const notificationService = """
 import 'awesomeNotification/awesome_notification_service.dart';
 import 'firebaseMessaging/firebase_messaging_service.dart';
 
@@ -39,4 +38,3 @@ class NotificationService {
   }
 }
 
-""";

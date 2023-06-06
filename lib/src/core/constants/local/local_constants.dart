@@ -1,4 +1,3 @@
-const localConstants = """
 class LocalConstants{
   static const theme = 'theme';
   static const accessToken = 'accessToken';
@@ -6,4 +5,3 @@ class LocalConstants{
   static const notificationTime = 'notificationTime';
   static const notificationStatus = 'notificationStatus';
 }
-""";

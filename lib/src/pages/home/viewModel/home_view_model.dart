@@ -1,4 +1,3 @@
-const homeViewModel = """
 import 'package:flutter/material.dart';
 import '../../../common/models/pagination_model.dart';
 import '../../../core/base/viewModel/base_view_model.dart';
@@ -49,4 +48,3 @@ class HomeViewModel extends ChangeNotifier with BaseViewModel, ShowBar {
   }
 }
 
-""";

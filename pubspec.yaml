@@ -18,6 +18,8 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   json_annotation: ^4.8.0
   provider: ^6.0.5
+  awesome_notifications:
+  firebase_messaging:
 
 
 dev_dependencies:

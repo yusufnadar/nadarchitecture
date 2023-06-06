@@ -1,4 +1,3 @@
-const networkService = """
 // ignore_for_file: join_return_with_assignment, overridden_fields, strict_raw_type
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -32,7 +31,7 @@ class NetworkService with DioMixin, ShowBar {
 
                 // Update the request header with the new access token
                 error.requestOptions.headers['Authorization'] =
-                    'Bearer \$newAccessToken';
+                    'Bearer $newAccessToken';
 
                 // Repeat the request with the updated header
                 return handler.resolve(await fetch(error.requestOptions));
@@ -79,7 +78,7 @@ class NetworkService with DioMixin, ShowBar {
           headers: {
             'Content-Type': 'application/json',
             'Authorization':
-                'Bearer \${LocalService.instance.read(LocalConstants.accessToken)}'
+                'Bearer ${LocalService.instance.read(LocalConstants.accessToken)}'
           },
         ),
       );
@@ -114,4 +113,3 @@ class NetworkService with DioMixin, ShowBar {
   }
 }
 
-""";

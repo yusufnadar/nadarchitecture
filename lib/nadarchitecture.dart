@@ -4,9 +4,13 @@ library nadarchitecture;
 
 import 'dart:io';
 
+import 'package:nadarchitecture/arch/core/constants/notification/notification_constants.dart';
+
+import '../../arch/core/services/notification/awesomeNotification/awesome_notification_service.dart';
+import '../../arch/core/services/notification/awesomeNotification/awesome_schedule_notification.dart';
+import '../../arch/core/services/notification/firebaseMessaging/firebase_messaging_service.dart';
 import '../../arch/common/viewModels/connection_view_model.dart';
 import '../../arch/common/viewModels/theme_view_model.dart';
-
 import '../../arch/core/base/view/base_view.dart';
 import '../../arch/core/base/viewModel/base_view_model.dart';
 import '../../arch/core/constants/app/app_constants.dart';
@@ -150,29 +154,35 @@ class Architecture {
     await File('$imageConstantsI/image_constants.dart')
         .writeAsString(imageConstants);
 
-    // image constants
+    // navigation constants
     const navigationConstantsI = '$constants/navigation';
     await Directory(navigationConstantsI).create();
     await File('$navigationConstantsI/navigation_constants.dart')
         .writeAsString(navigationConstants);
 
-    // image constants
+    // text styles constants
     const testStyleConstantsI = '$constants/textStyles';
     await Directory(testStyleConstantsI).create();
     await File('$testStyleConstantsI/text_style_constants.dart')
         .writeAsString(textStyleConstants);
 
-    // image constants
+    // theme constants
     const themeConstantsI = '$constants/theme';
     await Directory(themeConstantsI).create();
     await File('$themeConstantsI/theme_constants.dart')
         .writeAsString(themeConstants);
 
-    // image constants
+    // local constants
     const localConstantsI = '$constants/local';
     await Directory(localConstantsI).create();
     await File('$localConstantsI/local_constants.dart')
         .writeAsString(localConstants);
+
+    // image constants
+    const notificationConstantsI = '$constants/notification';
+    await Directory(notificationConstantsI).create();
+    await File('$notificationConstantsI/notification_constants.dart')
+        .writeAsString(notificationConstants);
 
     // exports
     const exports = '$core/exports';
@@ -241,6 +251,20 @@ class Architecture {
     await Directory(notificationServiceI).create();
     await File('$notificationServiceI/notification_service.dart')
         .writeAsString(notificationService);
+
+    // awesome notification service
+    const awesomeNotification = '$notificationServiceI/awesomeNotification';
+    await Directory(awesomeNotification).create();
+    await File('$awesomeNotification/awesome_notification_service.dart')
+        .writeAsString(awesomeNotificationService);
+    await File('$awesomeNotification/awesome_schedule_notification.dart')
+        .writeAsString(awesomeScheduleNotification);
+
+    // firebase messaging service
+    const firebaseMessaging = '$notificationServiceI/firebaseMessaging';
+    await Directory(firebaseMessaging).create();
+    await File('$firebaseMessaging/firebase_messaging_service.dart')
+        .writeAsString(firebaseMessagingService);
 
     // size service
     const sizeServiceI = '$services/size';
