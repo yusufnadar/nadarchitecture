@@ -37,3 +37,27 @@
 ## [1.0.5] - (12.05.2023)
 
 * Pagination model added and network service completely changed
+
+## [1.0.6] - (15.06.2023)
+
+* Notification service uploaded
+
+## [1.0.7] - (18.06.2023)
+
+* Some bugs fixed
+
+## [1.0.8] - (19.06.2023)
+
+* Some bugs fixed
+
+## [1.0.9] - (21.06.2023)
+
+* pubspec.yaml file changing
+
+## [1.0.10] - (22.06.2023)
+
+* Some bugs fixed
+
+## [1.0.11] - (22.06.2023)
+
+* Build gradle minSdk version updating for awesome notification package

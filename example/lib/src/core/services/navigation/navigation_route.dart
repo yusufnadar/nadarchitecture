@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../pages/home/view/home_view.dart';
 import '../../exports/constants_exports.dart';
 
+// Router yapılarının oluşturulduğu kısım
 class NavigationRoute {
   NavigationRoute._init();
 

@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 
+// Cihazın yatay ya da diket olarak kullanılacağını belirlediğimiz kısım
 mixin DeviceOrientationSettings {
   static Future screenVertical() async {
     await SystemChrome.setPreferredOrientations(
@@ -25,3 +26,4 @@ mixin DeviceOrientationSettings {
     );
   }
 }
+

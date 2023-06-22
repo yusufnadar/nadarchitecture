@@ -4,12 +4,13 @@ library nadarchitecture;
 
 import 'dart:io';
 
+import 'package:nadarchitecture/arch/common/models/token_model.dart';
+import 'package:nadarchitecture/arch/common/viewModels/language_view_model.dart';
 import 'package:nadarchitecture/arch/core/constants/notification/notification_constants.dart';
+import 'package:nadarchitecture/arch/core/services/language/language_service.dart';
+import 'package:nadarchitecture/arch/core/services/language/languages/l10n.dart';
+import 'package:nadarchitecture/arch/core/services/network/network_exception.dart';
 
-import '../../arch/core/services/notification/awesomeNotification/awesome_notification_service.dart';
-import '../../arch/core/services/notification/awesomeNotification/awesome_schedule_notification.dart';
-import '../../arch/core/services/notification/firebaseMessaging/firebase_messaging_service.dart';
-import '../../arch/common/viewModels/connection_view_model.dart';
 import '../../arch/common/viewModels/theme_view_model.dart';
 import '../../arch/core/base/view/base_view.dart';
 import '../../arch/core/base/viewModel/base_view_model.dart';
@@ -32,6 +33,9 @@ import '../../arch/core/services/navigation/navigation_route.dart';
 import '../../arch/core/services/navigation/navigation_service.dart';
 import '../../arch/core/services/network/network_service.dart';
 import '../../arch/core/services/network/response_parser.dart';
+import '../../arch/core/services/notification/awesomeNotification/awesome_notification_service.dart';
+import '../../arch/core/services/notification/awesomeNotification/awesome_schedule_notification.dart';
+import '../../arch/core/services/notification/firebaseMessaging/firebase_messaging_service.dart';
 import '../../arch/core/services/notification/notification_service.dart';
 import '../../arch/core/services/size/size_service.dart';
 import '../../arch/core/services/theme/theme_service.dart';
@@ -40,9 +44,7 @@ import '../../arch/pages/home/model/post_model.dart';
 import '../../arch/pages/home/model/post_model.g.dart';
 import '../../arch/pages/home/widget/one_item.dart';
 import 'arch/common/models/pagination_model.dart';
-import 'arch/core/base/error/base_error.dart';
 import 'arch/core/base/model/base_model.dart';
-import 'arch/core/base/state/base_state.dart';
 import 'arch/core/constants/colors/color_constants.dart';
 import 'arch/core/constants/endPoints/end_point_constants.dart';
 import 'arch/core/constants/images/image_constants.dart';
@@ -50,15 +52,101 @@ import 'arch/pages/home/view/home_view.dart';
 import 'arch/pages/home/viewModel/home_view_model.dart';
 import 'scripts/build_sh.dart';
 
+const l10nYaml = """
+arb-dir: lib/src/core/services/language/languages  # l10n.dart dosyasının yolunun belirtildiği kısım
+template-arb-file: app_en.arb # Örnek alınacak dil dosyasının adı
+output-localization-file: app_localizations.dart # dosyalar oluşturulduktan sonra .dart_tool/flutter_gen/gen_l10n dosyasının altında oluşacak dosyanın ismi
+""";
+
+const pubspec = """
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # state management
+  provider: ^6.0.5
+
+  # network request
+  dio: ^5.2.1+1
+
+  # local storage
+  get_storage: ^2.1.1
+
+  # internet connection
+  internet_connection_checker: ^1.0.0+1
+
+  # internet connection
+  connectivity_plus: ^4.0.1
+
+  # create model easily
+  json_annotation: ^4.8.1
+
+  # local notifications
+  awesome_notifications: ^0.7.4+1
+
+  #firebase notifications
+  firebase_messaging: ^14.6.3
+
+  # language support
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.5
+  flutter_lints: ^2.0.1
+  json_serializable: ^6.7.0
+
+
+flutter:
+  uses-material-design: true
+  generate: true
+  """;
+
 class Architecture {
   static Future<void> createArchitecture() async {
     const srcFolder = 'lib/src';
     await Directory(srcFolder).create();
+    const l10nFile = './l10n.yaml';
+    await File(l10nFile).writeAsString(l10nYaml);
+    const buildGradleFile = './android/app/build.gradle';
+    var lines = await File(buildGradleFile).readAsLines();
+    var tempLines = [];
+    tempLines.addAll(lines);
+    for(int i = 0; i<lines.length;i++){
+      if(lines[i].contains('minSdkVersion')){
+        tempLines[i] = '        minSdkVersion 21';
+      }
+    }
+    await File(buildGradleFile).writeAsString(tempLines.join('\n'));
+    await changePubspecYaml();
     await createCommon();
     await createCore();
     await createPages();
     await createMain();
     await createScripts();
+  }
+
+  static Future<void> changePubspecYaml() async {
+    const pubspecYaml = './pubspec.yaml';
+    final List<String> lines = File(pubspecYaml).readAsLinesSync();
+    var tempLines = [
+      lines[0],
+      lines[1],
+      '',
+      lines[4],
+      '',
+      lines[18],
+      '',
+      lines[20],
+      lines[21],
+      '\n',
+      pubspec
+    ];
+    await File(pubspecYaml).writeAsString(tempLines.join('\n'));
   }
 
   static Future<void> createCommon() async {
@@ -68,15 +156,20 @@ class Architecture {
     // viewModels
     const controllers = '$common/viewModels';
     await Directory(controllers).create();
+    /*
     await File('$controllers/connection_view_model.dart')
         .writeAsString(connectionViewModel);
+     */
     await File('$controllers/theme_view_model.dart')
         .writeAsString(themeViewModel);
+    await File('$controllers/language_view_model.dart')
+        .writeAsString(languageViewModel);
 
     // models
     const models = '$common/models';
     await Directory(models).create();
     await File('$models/pagination_model.dart').writeAsString(paginationModel);
+    await File('$models/token_model.dart').writeAsString(tokenModel);
   }
 
   static Future<void> createCore() async {
@@ -87,20 +180,10 @@ class Architecture {
     const base = '$core/base';
     await Directory(base).create();
 
-    // base error
-    const baseErrorI = '$base/error';
-    await Directory(baseErrorI).create();
-    await File('$baseErrorI/base_error.dart').writeAsString(baseError);
-
     // base model
     const baseModelI = '$base/model';
     await Directory(baseModelI).create();
     await File('$baseModelI/base_model.dart').writeAsString(baseModel);
-
-    // base state
-    const baseStateI = '$base/state';
-    await Directory(baseStateI).create();
-    await File('$baseStateI/base_state.dart').writeAsString(baseState);
 
     // base view
     const baseViewI = '$base/view';
@@ -238,11 +321,24 @@ class Architecture {
     await File('$navigationServiceI/navigation_route.dart')
         .writeAsString(navigationRoute);
 
+    // language service
+    const languageServiceI = '$services/language';
+    await Directory(languageServiceI).create();
+    await File('$languageServiceI/language_service.dart')
+        .writeAsString(languageService);
+    const languageServiceI2 = '$languageServiceI/languages';
+    await Directory(languageServiceI2).create();
+    await File('$languageServiceI2/l10n.dart').writeAsString(l10n);
+    await File('$languageServiceI2/app_en.arb').writeAsString('{}');
+    await File('$languageServiceI2/app_tr.arb').writeAsString('{}');
+
     // network service
     const networkServiceI = '$services/network';
     await Directory(networkServiceI).create();
     await File('$networkServiceI/network_service.dart')
         .writeAsString(networkService);
+    await File('$networkServiceI/network_exception.dart')
+        .writeAsString(networkException);
     await File('$networkServiceI/response_parser.dart')
         .writeAsString(responseParser);
 

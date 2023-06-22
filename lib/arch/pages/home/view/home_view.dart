@@ -1,25 +1,19 @@
 const homeView = """
 import 'package:flutter/material.dart';
-import '../../../core/base/state/base_state.dart';
 import '../../../core/base/view/base_view.dart';
 import '../viewModel/home_view_model.dart';
 import '../widget/one_item.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends BaseState<HomeView> {
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeViewModel>(
       viewModel: HomeViewModel(),
       onPageBuilder: (context, model, child) {
         return Scaffold(
-          appBar: buildAppBar(model),
+          appBar: buildAppBar(model, context),
           body: buildBody(model),
         );
       },
@@ -28,6 +22,7 @@ class _HomeViewState extends BaseState<HomeView> {
 
   ListView buildBody(HomeViewModel model) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: model.posts.length,
       itemBuilder: (context, index) {
         return OneItem(
@@ -38,7 +33,7 @@ class _HomeViewState extends BaseState<HomeView> {
     );
   }
 
-  AppBar buildAppBar(HomeViewModel model) {
+  AppBar buildAppBar(HomeViewModel model, BuildContext context) {
     return AppBar(
       actions: [
         IconButton(

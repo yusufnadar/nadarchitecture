@@ -1,6 +1,8 @@
 import '../../core/base/model/base_model.dart';
 
-class PaginationModel<T extends BaseModel> {
+// Pagination ile verileri getirirken sadece bize gelecek payloadın modelini
+// göndererek verileri alabiliyoruz
+class PaginationModel<T extends BaseModel?> {
   PaginationModel({
     this.count,
     this.next,
@@ -31,7 +33,8 @@ class PaginationModel<T extends BaseModel> {
         "next": next,
         "previous": previous,
         "results": List<dynamic>.from(
-          results!.map((x) => x.toJson()),
+          results!.map((x) => x!.toJson()),
         ),
       };
 }
+    

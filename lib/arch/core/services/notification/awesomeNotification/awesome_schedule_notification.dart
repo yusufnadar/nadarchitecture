@@ -69,6 +69,7 @@ class AwesomeScheduleNotification {
   }
 
   Future<void> checkDateAndActivateNotification({hour, minute}) async {
+    // bildirimlerin süresinin bitmesine 3 günden az kaldıysa yenileniyor
     if (localService.read(LocalConstants.notificationTime) != null) {
       if (DateTime.parse(localService.read(LocalConstants.notificationTime))
               .difference(DateTime.now())
@@ -87,12 +88,17 @@ class AwesomeScheduleNotification {
     await cancel();
     var now = DateTime.now();
     var thisDay = now.day;
+    // eğer bildirim saati bugünün saatini geçtiyse bildirimler yarından
+    // itibaren atılmaya başlanıyor
     bool isAfter = DateTime(now.year, now.month, now.day, hour, minute,
             now.second, now.millisecond, now.microsecond)
         .isAfter(
       now,
     );
-    isAfter == false ? thisDay += 1 : null;
+     if (isAfter == false) {
+      thisDay += 1;
+    }
+    // bildirimleri 2 aylık oluşturuyoruz çünkü max 64 bildirimi belleğinde tutuyor
     switch (now.month) {
       case 1:
         {
@@ -167,12 +173,13 @@ class AwesomeScheduleNotification {
         }
         break;
     }
+    // bildirim oluşturulduğunda bunu oluşturuldu olarak işaretliyoruz
     await localService.write(LocalConstants.notificationStatus, true);
+    // bildirimin zamanını kaydediyoruz
     await localService.write(
       LocalConstants.notificationTime,
       lastDate.toIso8601String(),
     );
   }
 }
-
 """;

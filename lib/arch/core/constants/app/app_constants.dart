@@ -1,8 +1,9 @@
 const appConstants = """
 import 'package:provider/provider.dart';
-import '../../../common/viewModels/connection_view_model.dart';
+import '../../../common/viewModels/language_view_model.dart';
 import '../../../common/viewModels/theme_view_model.dart';
 
+// Uygulamayla ilgili temel veriler
 class AppConstants {
   static const appName = 'AppName';
   static const fontFamily = 'fontFamily';
@@ -11,8 +12,8 @@ class AppConstants {
     ChangeNotifierProvider<ThemeViewModel>(
       create: (context) => ThemeViewModel(),
     ),
-    ChangeNotifierProvider<ConnectionViewModel>(
-      create: (context) => ConnectionViewModel(),
+    ChangeNotifierProvider<LanguageViewModel>(
+      create: (context) => LanguageViewModel(),
     ),
   ];
 }

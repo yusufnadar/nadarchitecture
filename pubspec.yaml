@@ -1,30 +1,56 @@
 name: nadarchitecture
 description: You can create a clean structure and benefit from its features
-version: 1.0.5
+version: 1.0.11
 homepage: https://github.com/yusufnadar/nadarchitecture
 
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: '>=3.0.5 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  connectivity_plus: ^3.0.3
-  dio: ^5.0.3
-  get_storage: ^2.1.1
-  internet_connection_checker: ^1.0.0+1
-  json_annotation: ^4.8.0
+  # state management
   provider: ^6.0.5
-  awesome_notifications:
-  firebase_messaging:
+
+  # network request
+  dio: ^5.2.1+1
+
+  # local storage
+  get_storage: ^2.1.1
+
+  # internet connection
+  internet_connection_checker: ^1.0.0+1
+
+  # internet connection
+  connectivity_plus: ^4.0.1
+
+  # create model easily
+  json_annotation: ^4.8.1
+
+  # local notifications
+  awesome_notifications: ^0.7.4+1
+
+  #firebase notifications
+  firebase_messaging: ^14.6.3
+
+  # language support
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.18.1
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.3.3
+  build_runner: ^2.4.5
   flutter_lints: ^2.0.1
-  json_serializable: ^6.6.1
+  json_serializable: ^6.7.0
+
+
+flutter:
+  uses-material-design: true
+  generate: true
+  

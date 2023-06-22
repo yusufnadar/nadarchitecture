@@ -1,16 +1,12 @@
 const notificationConstants = """
+// Paketler için ve firebase için tanımlanan değerler
 class NotificationConsts {
-  // awesome notifications
+  // awesome notification
   static const channelKey = 'high_importance_channel';
   static const channelName = 'channelName';
   static const channelDescription = 'Notification channel for basic tests';
 
-  // local notifications
-  static const channelId = '10';
-  static const mipmap = '@mipmap/ic_launcher';
-  static const payload = 'yusuf.o';
-
-  static const hour = 05;
-  static const minute = 41;
+  static const cloudMessaging =
+      'key=AAAApgEnkgM:APA91bFJTPvNkAXbbvcwqlF4hpzbmLL9O8aaINO-59Tpf0yBE8IHEioLAJsT0HJAkMta1xeQ7KM-pmUY5BEuFiJJ0e8xf-RUQRjQfisFedwHeBLMX1_Ab5SBiE99TCMbZPtQLApbPKte';
 }
 """;

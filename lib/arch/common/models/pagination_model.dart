@@ -1,6 +1,8 @@
 const paginationModel = """
 import '../../core/base/model/base_model.dart';
 
+// Pagination ile verileri getirirken sadece bize gelecek payloadın modelini
+// göndererek verileri alabiliyoruz
 class PaginationModel<T extends BaseModel?> {
   PaginationModel({
     this.count,

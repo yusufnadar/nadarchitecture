@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+
 import '../../../core/base/model/base_model.dart';
+
 part 'post_model.g.dart';
 
 @JsonSerializable()

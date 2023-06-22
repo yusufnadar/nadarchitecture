@@ -1,6 +1,8 @@
 const navigationService = """
 import 'package:flutter/material.dart';
 
+// Router işlemlerinin tek bir sınıftan daha kısa bir şekilde yapılması için
+// ele alınan kısım
 abstract class INavigationService {
   Future<void> navigateToPage({String? path, Object? data});
 
@@ -16,10 +18,11 @@ class NavigationService implements INavigationService {
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
-  get removeAllOldRoutes => (Route<dynamic> route) => false;
+  bool Function(Route<dynamic> route) get removeAllOldRoutes =>
+          (Route<dynamic> route) => false;
 
   @override
-  Future<void> navigateToPage({String? path, Object? data}) async {
+  Future<void> navigateToPage({String? path, Object? data,bool? rootNavigator}) async {
     await navigatorKey.currentState!.pushNamed(path!, arguments: data);
   }
 

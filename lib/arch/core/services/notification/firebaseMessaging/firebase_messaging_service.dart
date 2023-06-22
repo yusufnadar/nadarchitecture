@@ -25,7 +25,8 @@ class FirebaseMessagingService {
     await controlTerminatedNotification();
     clickNotificationBackground();
     token = await messaging.getToken();
-    // save user token
+    // kullanıcının tokenini kaydetmemiz gerekiyor
+    // TODO: save token
     showNotificationForeground();
   }
 
@@ -36,6 +37,8 @@ class FirebaseMessagingService {
     onMessage.listen(
       (event) {
         if (Platform.isAndroid == true) {
+          // push notification - açık
+          // cloud messaging - açık
           AwesomeNotifications().createNotification(
             content: NotificationContent(
               id: 1,
@@ -45,6 +48,9 @@ class FirebaseMessagingService {
               payload: {'data': json.encode(event.data)},
             ),
           );
+        } else if (Platform.isIOS == true) {
+          // push notification - açık - otomatik
+          // cloud messaging - açık - otomatik
         }
       },
     );
@@ -54,11 +60,19 @@ class FirebaseMessagingService {
     onMessageOpenedApp.listen(
       (event) {
         if (Platform.isAndroid == true) {
-          // example getting payload event.data['type']
-          // do something
+          // push notification - arka plan
+          // cloud messaging - arka plan - otomatik
+
+          // payload example event.data['type']
+          // TODO: do something
         } else if (Platform.isIOS == true) {
-          // example getting payload event.data['type']
-          // do something
+          // push notification - açık - actionReceiveMethod.listenda tetikleniyor
+          // push notification - arka plan - actionReceiveMethod.listenda tetikleniyor
+          // cloud messaging - açık - actionReceiveMethod.listenda tetikleniyor
+          // cloud messaging - arka plan - actionReceiveMethod.listenda tetikleniyor
+
+          // payload example event.data['type']
+          // TODO: do something
         }
       },
     );
@@ -66,22 +80,30 @@ class FirebaseMessagingService {
 
   Future<void> controlTerminatedNotification() async {
     var isNotification = await messaging.getInitialMessage();
-    if (Platform.isIOS == true) {
+    if (Platform.isAndroid == true) {
+      // push notification - kapalı - otomatikse
+      // cloud messaging - kapalı - otomatikse
       if (isNotification != null) {
-        // do something
+        // TODO: do something
       }
-    } else if (Platform.isAndroid == true) {
+    } else if (Platform.isIOS == true) {
+      // push notification - kapalı - onActionReceiveMethod tetikleniyor
+      // cloud messaging - kapalı - onActionReceiveMethod tetikleniyor
       if (isNotification != null) {
-        // do something
+        // TODO: do something
       }
     }
   }
 }
 
+// notification yerine data payloadı gelirse göstermek için burayı aktifleştiriyoruz
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   if (Platform.isAndroid == true) {
+    // push notification - arka plan - otomatik
+    // push notification - kapalı - otomatik
+    // cloud messaging - arka plan - otomatik
+    // cloud messaging - kapalı - otomatik
   } else if (Platform.isIOS == true) {}
 }
-
 """;

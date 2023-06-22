@@ -1,17 +1,19 @@
 // ignore_for_file: library_private_types_in_public_api
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../viewModel/base_view_model.dart';
 
+// Sayfa içerisinde kullanılacak viewModelı bir sınıf altında topluyoruz
 class BaseView<T extends ChangeNotifier> extends StatefulWidget {
-  const BaseView(
-      {Key? key,
-      required this.viewModel,
-      required this.onPageBuilder,
-      this.onModelReady,
-      this.onDispose,
-      this.justConsumer})
-      : super(key: key);
+  const BaseView({
+    Key? key,
+    required this.viewModel,
+    required this.onPageBuilder,
+    this.onModelReady,
+    this.onDispose,
+    this.justConsumer,
+  }) : super(key: key);
   final Widget Function(BuildContext context, T model, Widget? child)
       onPageBuilder;
   final T viewModel;
@@ -53,3 +55,4 @@ class _BaseViewState<T extends ChangeNotifier> extends State<BaseView<T>> {
     }
   }
 }
+

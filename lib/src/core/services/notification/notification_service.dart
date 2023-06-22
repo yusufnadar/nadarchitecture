@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import '../../constants/notification/notification_constants.dart';
+import '../../exports/constants_exports.dart';
+import '../network/network_service.dart';
 import 'awesomeNotification/awesome_notification_service.dart';
 import 'firebaseMessaging/firebase_messaging_service.dart';
 
@@ -10,31 +15,29 @@ class NotificationService {
 
   final firebaseMessagingService = FirebaseMessagingService.instance;
   final awesomeNotificationService = AwesomeNotificationService.instance;
+  final networkService = NetworkService.instance;
 
   Future<void> init() async {
     await firebaseMessagingService.init();
     await awesomeNotificationService.init();
   }
 
-  Future<void> sendNotification() async {
-    /*
-    var msg = {
-      "to":
-      'dvxBRdRLTqa_84S4VjFfu3:APA91bFLzF1vTQBAd2fHghroOA1xUq-Ew3yvGmvS2xt34IWEDhjLARud7WAY9EwtKTneN1RxyGRo2lNFFg7ZcKsKZqB342l7UsnGx9tkjnqEo7FnYc1X5c5VV8BO8XhW4eoifKZa4tpW',
-      // eğer notificationı göndermezsek bildirim otomatik olarak oluşmuyo
-      "notification": {"title": "aa", "body": "body"},
-      // "data": {"title": "Testt2", "body": "Heyy2"}
-    };
-    await http.post(
-      Uri.parse('https://fcm.googleapis.com/fcm/send'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization':
-        'key=AAAApgEnkgM:APA91bFJTPvNkAXbbvcwqlF4hpzbmLL9O8aaINO-59Tpf0yBE8IHEioLAJsT0HJAkMta1xeQ7KM-pmUY5BEuFiJJ0e8xf-RUQRjQfisFedwHeBLMX1_Ab5SBiE99TCMbZPtQLApbPKte'
-      },
-      body: jsonEncode(msg),
+  Future<void> sendNotification(
+      String otherUserToken, String title, String body) async {
+    // farklı bir kullanıcıdan diğerine cloud messaging sayesinde bildirim gönderdiğimiz kısım
+    networkService?.send(
+      '',
+      type: HttpTypes.post,
+      parseModel: null,
+      token: NotificationConsts.cloudMessaging,
+      // eğer notification parametresini göndermezsek bildirim otomatik olarak oluşmuyo
+      data: json.encode(
+        {
+          'to': otherUserToken,
+          "notification": {'title': title, 'body': body},
+          // "data": {"title": "Testt2", "body": "Heyy2"}
+        },
+      ),
     );
-    */
   }
 }
-

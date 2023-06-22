@@ -1,6 +1,13 @@
 const contextExtension = """
 import 'package:flutter/material.dart';
 
+// context ile her sayfa içerisinde kolayca erişmemizi sağlayan kısımlar
+
+extension NavigationExtension on BuildContext {
+  NavigatorState get rootNavigator => Navigator.of(this, rootNavigator: false);
+  NavigatorState get navigator => Navigator.of(this);
+}
+
 extension ContextExtension on BuildContext {
   MediaQueryData get mediaQuery => MediaQuery.of(this);
 }

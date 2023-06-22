@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import '../../exports/constants_exports.dart';
 import '../local/local_service.dart';
 
+// Uygulamanın tema değişiminin yapıldığı ve kaydedildiği kısım
 class ThemeService {
   ThemeService._init();
 
@@ -11,15 +13,11 @@ class ThemeService {
 
   final localService = LocalService.instance;
 
-  bool isSavedDarkMode() {
-    return localService.read(LocalConstants.theme) ?? false;
-  }
+  bool isSavedDarkMode() => localService.read(LocalConstants.theme) ?? false;
 
-  ThemeMode getTheme() {
-    return isSavedDarkMode() == true ? ThemeMode.dark : ThemeMode.light;
-  }
+  ThemeMode getTheme() =>
+      isSavedDarkMode() == true ? ThemeMode.dark : ThemeMode.light;
 
-  Future<void> setTheme(value) async {
-    await localService.write(LocalConstants.theme, value);
-  }
+  Future<void> changeTheme(value) async =>
+      await localService.write(LocalConstants.theme, value);
 }

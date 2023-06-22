@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SizeService {
   static late BuildContext context;
 
-  static void init(serviceContext) {
+  static void init(BuildContext serviceContext) {
     context = serviceContext;
   }
 

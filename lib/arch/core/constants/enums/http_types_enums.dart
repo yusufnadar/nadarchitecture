@@ -1,3 +1,4 @@
 const httpTypesEnums = """
-enum HttpTypes { get, post, delete, put }
+// İnternet isteğinin atılabileceği türler
+enum HttpTypes { get, post, delete, put, patch }
 """;
