@@ -124,6 +124,10 @@ class Architecture {
     await createFeatures();
     await createMain();
     await createScripts();
+    await runBuildRunner();
+  }
+
+  static Future<void> runBuildRunner() async {
     await Process.run('dart', ['run', 'build_runner', 'build']);
   }
 
@@ -199,7 +203,8 @@ class Architecture {
     // base pagination model
     const basePaginationModelI = '$baseModel/pagination_model';
     await Directory(basePaginationModelI).create();
-    await File('$basePaginationModelI/base_pagination_model.dart').writeAsString(basePaginationModel);
+    await File('$basePaginationModelI/base_pagination_model.dart')
+        .writeAsString(basePaginationModel);
 
     // consts
     const consts = '$core/consts';
