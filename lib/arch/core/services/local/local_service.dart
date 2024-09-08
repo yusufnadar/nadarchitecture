@@ -1,17 +1,13 @@
 const localService = """
 import 'package:get_storage/get_storage.dart';
 
-// Uygulamanın local veri tabanını kullandığımız kısım
 class LocalService {
-  LocalService._init();
+  LocalService(this._getStorage);
 
-  static late GetStorage _getStorage;
-  static LocalService? _instance;
+  final GetStorage _getStorage;
 
-  static LocalService get instance {
-    _instance ??= LocalService._init();
-    _getStorage = GetStorage();
-    return _instance!;
+  Future<void> init() async {
+    await GetStorage.init();
   }
 
   dynamic read(String key) {

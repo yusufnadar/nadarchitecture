@@ -1,27 +1,21 @@
 const tokenModel = """
-import '../../core/base/model/base_model.dart';
+// ignore_for_file: invalid_annotation_target
 
-class TokenModel extends BaseModel<TokenModel> {
-  TokenModel({
-    this.access,
-    this.refresh,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  String? access;
-  String? refresh;
+part 'token_model.freezed.dart';
+part 'token_model.g.dart';
 
-  @override
-  TokenModel fromJson(Map<String, dynamic> json) {
-    return TokenModel(
-      access: json["access"],
-      refresh: json["refresh"],
-    );
-  }
+@freezed
+class TokenModel with _\$TokenModel {
+  @JsonSerializable(explicitToJson: true)
+  const factory TokenModel({
+    @JsonKey(name: 'accessToken') String? accessToken,
+    @JsonKey(name: 'refreshToken') String? refreshToken,
+  }) = _TokenModel;
 
-  @override
-  Map<String, dynamic> toJson() => {
-        "access": access,
-        "refresh": refresh,
-      };
+  factory TokenModel.fromJson(Map<String, dynamic> json) =>
+      _\$TokenModelFromJson(json);
 }
+
 """;

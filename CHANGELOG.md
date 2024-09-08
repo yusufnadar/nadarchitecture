@@ -61,3 +61,23 @@
 ## [1.0.11] - (22.06.2023)
 
 * Build gradle minSdk version updating for awesome notification package
+
+## [1.0.12] - (23.06.2023)
+
+* Some bugs fixed
+
+## [1.0.13] - (24.06.2023)
+
+* Some bugs fixed
+
+## [1.0.14] - (25.06.2023)
+
+* Some bugs fixed
+
+## [1.0.15] - (26.06.2023)
+
+* Some bugs fixed
+
+## [1.0.16] - (08.08.2024)
+
+* Whole architecture completely changed, more simple and more easy to use

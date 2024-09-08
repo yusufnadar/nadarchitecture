@@ -1,111 +1,117 @@
 const networkService = """
-// ignore_for_file: overridden_fields
-
 import 'dart:developer';
-import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
-import '../../../../src/core/mixins/show_bar.dart';
-import '../../../common/models/pagination_model.dart';
-import '../../../common/models/token_model.dart';
-import '../../../core/services/network/response_parser.dart';
-import '../../base/model/base_model.dart';
-import '../../exports/constants_exports.dart';
-import '../local/local_service.dart';
-import '../navigation/navigation_service.dart';
-import 'network_exception.dart';
 
-class NetworkService with DioMixin, ShowBar {
-  NetworkService._init() {
-    httpClientAdapter = IOHttpClientAdapter();
-    interceptors.add(
-      InterceptorsWrapper(
-        // gelen hatalara göre ne yapacağını burada belirliyoruz
-        onError: NetworkException.instance.onError(),
-      ),
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+
+import '../../base/model/error_model/base_error_model.dart';
+import '../../consts/end_point/app_end_points.dart';
+import '../../consts/enum/http_type_enums.dart';
+import '../../consts/local/app_locals.dart';
+import '../local/local_service.dart';
+import 'helper/network_helper.dart';
+
+class NetworkService with DioMixin {
+  NetworkService(this._dio, this._localService);
+
+  final Dio _dio;
+  final LocalService _localService;
+  late NetworkHelper _networkHelper;
+
+  void init() {
+    _networkHelper = NetworkHelper();
+    _dio.httpClientAdapter = HttpClientAdapter();
+    _dio.options = BaseOptions(baseUrl: AppEndpoints.baseUrl);
+    _dio.interceptors.add(
+      InterceptorsWrapper(onError: _networkHelper.onError),
     );
   }
 
-  static NetworkService? _instance;
-
-  static NetworkService? get instance {
-    _instance ??= NetworkService._init();
-    return _instance;
-  }
-
-  @override
-  final BaseOptions options = BaseOptions(
-    baseUrl: EndPointConstants.baseUrl,
-    connectTimeout: const Duration(seconds: 30),
-    sendTimeout: const Duration(seconds: 30),
-  );
-
-  Future<R?> send<T extends BaseModel?, R>(
+  Future<Either<BaseErrorModel, T>> call<T>(
     String path, {
-    required HttpTypes type,
-    // eğer geriye bir cevap dönmeyecekse bu kısmı null gönderiyoruz
-    required T? parseModel,
-    dynamic data,
-    String? contentType,
-    // pagination ile gelen liste elemanları varsa
-    bool? isPagination,
-    // baseUrl farklı ise burada değiştiriyoruz
-    String? baseUrl,
-    // access token yerine farklı token kullanılabilir
+    Map<String, dynamic>? data,
     String? token,
+    required T Function(dynamic json) mapper,
+    bool? fileRequest,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
+    required HttpTypes httpTypes,
   }) async {
     try {
-      options.baseUrl = baseUrl ?? EndPointConstants.baseUrl;
-      final response = await request<dynamic>(
+      return await sendRequest(
+        path: path,
+        data: data,
+        token: token,
+        method: httpTypes.name,
+        mapper: mapper,
+        queryParameters: queryParameters,
+        headers: headers,
+        fileRequest: fileRequest,
+      );
+    } on DioException catch (error) {
+      log(error.requestOptions.uri.path);
+      return sendDioException(error);
+    } catch (error) {
+      return sendException(error);
+    }
+  }
+
+  Left<BaseErrorModel, T> sendException<T>(Object error) {
+    return Left(BaseErrorModel.fromJson({'message': error.toString()}));
+  }
+
+  Left<BaseErrorModel, T> sendDioException<T>(DioException error) {
+    if (error.response?.data != null) {
+      return Left(BaseErrorModel.fromJson(error.response?.data));
+    } else {
+      return Left(BaseErrorModel.fromJson({'message': error.toString()}));
+    }
+  }
+
+  Future<Either<BaseErrorModel, T>> sendRequest<T>({
+    required String path,
+    Map<String, dynamic>? data,
+    String? method,
+    String? token,
+    required T Function(dynamic json) mapper,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+    bool? fileRequest,
+  }) async {
+    late Response response;
+    if (fileRequest == null) {
+      response = await _dio.request(
         path,
         data: data,
+        cancelToken: cancelToken,
+        queryParameters: queryParameters,
         options: Options(
-          method: type.name,
+          method: method,
+          headers: headers ??
+              {
+                Headers.contentTypeHeader: Headers.jsonContentType,
+                'Authorization': 'Bearer \${token ?? _localService.read(AppLocals.accessToken)}'
+              },
+        ),
+      );
+    } else {
+      response = await _dio.request(
+        path,
+        data: data != null ? FormData.fromMap(data) : null,
+        cancelToken: cancelToken,
+        queryParameters: queryParameters,
+        options: Options(
+          method: method,
           headers: {
-            Headers.contentTypeHeader: contentType ?? Headers.jsonContentType,
-            'Authorization': token ??
-                'Bearer \${LocalService.instance.read(LocalConstants.accessToken)}',
+            Headers.contentTypeHeader: Headers.multipartFormDataContentType,
+            'Authorization': 'Bearer \${token ?? _localService.read(AppLocals.accessToken)}',
           },
         ),
       );
-      if (parseModel == null) {
-        return null;
-      }
-      if (isPagination != true) {
-        return responseParser<T, R>(parseModel as BaseModel<T>, response.data);
-      } else {
-        return PaginationModel<T>()
-            .fromJson(response.data as Map<String, dynamic>, parseModel)
-            .results as R;
-      }
-    } catch (error) {
-      // Dio tarafında ya da sunucu tarafında bir hata yoksa burada oluşturuyoruz
-      log('Network Service Request Error \$error');
-      showErrorBar(error, title: 'Error about app');
     }
-    return null;
-  }
-
-  Future<String?> refreshToken() async {
-    // tokenı bir süre sonra yenileyeceğimiz zaman istek attığımız yer
-    // burası oluyor
-    try {
-      var token = await send<TokenModel, TokenModel>(
-        EndPointConstants.refresh,
-        type: HttpTypes.post,
-        parseModel: TokenModel(),
-      );
-      if (token is TokenModel) {
-        LocalService.instance.write(LocalConstants.accessToken, token.access);
-        LocalService.instance.write(LocalConstants.accessToken, token.refresh);
-        return token.access;
-      }
-    } catch (error) {
-      await NavigationService.instance.navigateToPageClear(
-        path: NavigationConstants.home,
-      );
-    }
-    return null;
+    return Right(mapper(response.data['data']));
   }
 }
 """;

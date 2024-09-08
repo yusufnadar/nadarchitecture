@@ -1,23 +1,18 @@
 const mainPage = """
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'src/common/viewModels/language_view_model.dart';
-import 'src/common/viewModels/theme_view_model.dart';
-import 'src/core/exports/constants_exports.dart';
-import 'src/core/services/language/languages/l10n.dart';
-import 'src/core/services/navigation/navigation_route.dart';
-import 'src/core/services/navigation/navigation_service.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'core/consts/app/app_constants.dart';
+import 'core/consts/theme/app_themes.dart';
+import 'core/helper/init/helper_init.dart';
+import 'core/services/get_it/get_it_service.dart';
+import 'core/services/route/app_router.dart';
+import 'core/services/route/route_service.dart';
+import 'core/services/theme/theme_service.dart';
 
-void main() async {
-  await GetStorage.init();
-  runApp(
-    MultiProvider(
-      providers: AppConstants.defaultProviders,
-      child: const MyApp(),
-    ),
-  );
+Future<void> main() async {
+  await HelperInit.init();
+  HelperInit.startApp();
 }
 
 class MyApp extends StatelessWidget {
@@ -25,27 +20,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 882),
       child: MaterialApp(
-        title: AppConstants.appName,
-        theme: ThemeConstants.lightTheme,
-        darkTheme: ThemeConstants.darkTheme,
         debugShowCheckedModeBanner: false,
-        themeMode: context.watch<ThemeViewModel>().themeMode,
-        //builder: (context, child) => BuilderWidget(child: child),
-        initialRoute: NavigationConstants.home,
-        onGenerateRoute: NavigationRoute.instance.generateRoute,
-        navigatorKey: NavigationService.instance.navigatorKey,
-        supportedLocales: L10n.allLanguages,
-        locale: context.watch<LanguageViewModel>().locale,
-        localizationsDelegates: const [
-          //.dart_tool dosyasının altında flutter_gen dosyası oluşturunca import ediyoruz 
-          // AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
+        title: AppConstants.appName,
+        themeMode: context.watch<ThemeService>().themeMode,
+        theme: AppThemes.lightTheme,
+        darkTheme: AppThemes.darkTheme,
+        navigatorKey: getIt<RouteService>().navigatorKey,
+        onGenerateRoute: AppRouter.generateRoute,
       ),
     );
   }
