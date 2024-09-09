@@ -17,6 +17,7 @@ import 'package:nadarchitecture/arch/core/constants/text_style/app_text_styles.d
 import 'package:nadarchitecture/arch/core/constants/theme/app_themes.dart';
 import 'package:nadarchitecture/arch/core/helper/extension/string.dart';
 import 'package:nadarchitecture/arch/core/helper/init/helper_init.dart';
+import 'package:nadarchitecture/arch/core/services/logger/logger_service.dart';
 import 'package:nadarchitecture/arch/core/services/network/helper/network_helper.dart';
 import 'package:nadarchitecture/arch/core/services/route/app_router.dart';
 import 'package:nadarchitecture/arch/core/services/route/route_service.dart';
@@ -288,6 +289,11 @@ class Architecture {
     const themeServiceI = '$services/theme';
     await Directory(themeServiceI).create();
     await File('$themeServiceI/theme_service.dart').writeAsString(themeService);
+
+    // logger service
+    const loggerServiceI = '$services/logger';
+    await Directory(loggerServiceI).create();
+    await File('$loggerServiceI/logger_service.dart').writeAsString(loggerService);
 
     // network service
     const networkServiceI = '$services/network';

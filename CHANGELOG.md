@@ -78,6 +78,10 @@
 
 * Some bugs fixed
 
-## [1.0.16] - (08.08.2024)
+## [1.0.16] - (08.09.2024)
 
 * Whole architecture completely changed, more simple and more easy to use
+
+## [1.0.17] - (09.09.2024)
+
+* Logger service added, you can see warning or success process easily
